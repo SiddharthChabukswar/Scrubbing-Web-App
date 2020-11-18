@@ -18,4 +18,5 @@ python routes.py
 ```
 - Open any browser (Recommendation: Use incognito mode)
 - Goto: http://127.0.0.1:5000/
+- Find the creds in Mysql.txt
 
