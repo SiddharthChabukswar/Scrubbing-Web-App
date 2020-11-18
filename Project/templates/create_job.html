@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Create Job</title>
+		<a href="/logout/">Logout</a>
+	</head>
+	<body>
+		<h1> Welcome to the Create Job page </h1>
+
+		<div>
+			<form action="" method="POST">
+				List ID: <input type="number" name="list_id" value="{{request.form.list_id}}" required><br>
+				Planned Calling Date: <input type="date" name="call_date" value="{{request.form.call_date}}" required><br>
+				<input type="submit" name="Create" value="Create">
+				<input type="reset" name="Reset">
+
+			</form>
+		</div>
+
+		<a href=""></a>
+	</body>
+</html>

@@ -1,0 +1,31 @@
+CREATE USER 'scrubbing_dev'@'localhost' IDENTIFIED BY '123456789';
+GRANT ALL PRIVILEGES ON * . * TO 'scrubbing_dev'@'localhost';
+FLUSH PRIVILEGES;
+
+CREATE DATABASE scrubbing;
+
+USE scrubbing;
+
+CREATE TABLE Users(
+	username VARCHAR(30) PRIMARY KEY NOT NULL,
+	first_name VARCHAR(30) NOT NULL, 
+	last_name VARCHAR(30) NOT NULL,
+	password VARCHAR(100) NOT NULL
+	);
+
+INSERT INTO Users VALUES('siddharth', 'siddharth', 'chabukswar', '$5$rounds=535000$JEESfoCK4IsdZhJS$sqENsab9ewyGoduzy3R7YdbGalcDmd.ZoHy8CdQbjqD');
+
+CREATE TABLE Schedules(
+	job_number INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	list_id BIGINT(14) UNSIGNED NOT NULL,
+	username VARCHAR(30) NOT NULL,
+	first_name VARCHAR(30) NOT NULL, 
+	last_name VARCHAR(30) NOT NULL,
+	planned_call_date DATE NOT NULL,
+	job_start_time TIMESTAMP NOT NULL,
+	job_expected_end_time TIMESTAMP NOT NULL,
+	status ENUM('Y', 'N') NOT NULL
+	);
+
+params = (job_number, list_id, username, first_name, last_name, planned_call_date, job_start_time, job_expected_end_time, status)
+INSERT INTO Schedules VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);

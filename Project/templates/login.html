@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>login</title>
+	</head>
+	<body>
+		<h1> Welcome to the LOGIN page </h1>
+
+		<div>
+			<form action="" method="POST">
+				Username: <input type="text" name="username" value="{{request.form.username}}" required><br>
+				Password: <input type="password" name="password" value="{{request.form.password}}" required><br>
+				<input type="submit" name="login" value="Login">
+				<input type="reset" name="Reset">
+			</form>
+			<p>{{error}}</p>
+		</div>
+
+	</body>
+</html>
