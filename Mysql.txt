@@ -21,8 +21,11 @@ CREATE TABLE Schedules(
 	username VARCHAR(30) NOT NULL,
 	first_name VARCHAR(30) NOT NULL, 
 	last_name VARCHAR(30) NOT NULL,
+	job_created TIMESTAMP NOT NULL,
 	planned_call_date DATE NOT NULL,
 	job_start_time TIMESTAMP NOT NULL,
 	job_expected_end_time TIMESTAMP NOT NULL,
 	status ENUM('Y', 'N') NOT NULL
 	);
+
+INSERT INTO Schedules VALUES('1', '0', 'null', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'N');
