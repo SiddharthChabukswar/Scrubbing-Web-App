@@ -8,8 +8,14 @@ from passlib.hash import sha256_crypt
 from functools import wraps
 
 
+##########################################################################################################################################################################################
+
+
 app = Flask(__name__)
 app.secret_key = "HelloworlditsPython"
+
+
+##########################################################################################################################################################################################
 
 
 def login_required(func):
@@ -28,8 +34,12 @@ def view_jobs_helper(statement, page):
 	totalelements = int(cur.fetchall()[0][0])
 	possible_pages = math.ceil(float(totalelements/perpage))
 	if possible_pages == 0:
+		con.close()
+		gc.collect()
 		return False, (), 1
 	if page > possible_pages:
+		con.close()
+		gc.collect()
 		return True, (), possible_pages
 	currentpage = (totalelements - (perpage*page))
 	if currentpage < 0:
@@ -43,6 +53,24 @@ def view_jobs_helper(statement, page):
 	con.close()
 	gc.collect()
 	return False, data, possible_pages
+
+def delete_job_helper(job_number):
+	error = 'job deletion failed'
+	print(type(job_number))
+	cur, con = connection('scrubbing')
+	cur.execute("SELECT * FROM Schedules WHERE job_number = %s", [job_number])
+	currdata = cur.fetchall()[0]
+	# print(currdata)
+	cur.execute("DELETE FROM Schedules WHERE job_number = %s;", [job_number])
+	# Make changes to Schedule	#
+	con.commit()
+	con.close()
+	gc.collect()
+	error = 'job deleted successfully'
+	return error
+
+
+##########################################################################################################################################################################################
 
 
 @app.route('/login/', methods = ['GET', 'POST'])
@@ -89,6 +117,7 @@ def logout():
 @app.route('/home/')
 @login_required
 def home():
+	session['del_job_number'] = ''
 	session['statement'] = ''
 	return render_template('home.html')
 	
@@ -96,21 +125,51 @@ def home():
 @app.route('/create_job/')
 @login_required
 def create_job():
+	session['del_job_number'] = ''
 	session['statement'] = ''
 	return render_template('create_job.html')
 
 
-@app.route('/delete_job/')
+@app.route('/delete_job/', methods = ['GET', 'POST'])
 @login_required
 def delete_job():
-	session['statement'] = ''
-	return render_template('delete_job.html')
+	error = ''
+	if request.method == 'POST':
+		if request.form['post_type'] == 'Check':
+			session['del_job_number'] = ''
+			username = session['username'].decode("utf-8")
+			job_number = request.form['job_number']
+			# print(username, job_number)
+			cur, con = connection('scrubbing')
+			cur.execute("SELECT * FROM Schedules WHERE job_number = %s AND username = %s AND status = 'N';", (job_number, username))
+			data = cur.fetchall()
+			con.close()
+			gc.collect()
+			if len(data) == 0:
+				error = 'No Upcoming job with Job Number : ' + job_number + ' found associated with Username: ' + username
+				return render_template('delete_job.html', error = error, checked = True)
+			else:
+				session['del_job_number'] = job_number
+				return render_template('delete_job.html', data = data[0], checked = True)
+		elif request.form['post_type'] == 'Yes':
+			job_number = session['del_job_number']
+			error = delete_job_helper(job_number)
+			return render_template('delete_job.html', checked = True, error = error)
+		else:
+			session['del_job_number'] = ''
+			error = 'Job deletion cancelled'
+			return render_template('delete_job.html', checked = True, error = error)
+	else:
+		session['del_job_number'] = ''
+		session['statement'] = ''
+		return render_template('delete_job.html')
 
 
 @app.route('/view_jobs/', defaults={'page':1}, methods = ['GET', 'POST'])
 @app.route('/view_jobs/page/<int:page>', methods = ['GET', 'POST'])
 @login_required
 def view_jobs(page):
+	session['del_job_number'] = ''
 	if request.method == 'POST':
 		page = 1
 		job_number = request.form['job_number']
@@ -120,7 +179,7 @@ def view_jobs(page):
 		last_name = request.form['last_name']
 		planned_call_date = request.form['planned_call_date']
 		status = request.form['status']
-		print(job_number, list_id, username, first_name, last_name, planned_call_date, status)
+		# print(job_number, list_id, username, first_name, last_name, planned_call_date, status)
 		count = 0
 		statement = " WHERE "
 		if job_number != '':
@@ -148,7 +207,7 @@ def view_jobs(page):
 			statement = ""
 		else:
 			statement = statement[:len(statement)-5]
-		print(statement)
+		# print(statement)
 		session['statement'] = statement
 		flag, data, possible_pages = view_jobs_helper(statement, page)
 		if flag == True:
@@ -158,7 +217,7 @@ def view_jobs(page):
 			return render_template('view_jobs.html', data = reversed(data), possible_pages = possible_pages, current_page = page)
 	else:
 		statement = session['statement']
-		print("statement:: ", statement)
+		# print("statement:: ", statement)
 		flag, data, possible_pages = view_jobs_helper(statement, page)
 		if flag == True:
 			session['statement'] = ''
@@ -170,6 +229,7 @@ def view_jobs(page):
 @app.route('/voice_generator/')
 @login_required
 def voice_generator():
+	session['del_job_number'] = ''
 	session['statement'] = ''
 	return render_template('voice_generator.html')
 

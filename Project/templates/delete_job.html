@@ -4,6 +4,23 @@
 		<title>Delete Job</title>
 		<a href="/logout/">Logout</a>
 		<a href="/home/">Home</a>
+		<style>
+			table {
+			  font-family: arial, sans-serif;
+			  border-collapse: collapse;
+			  width: 100%;
+			}
+			
+			td, th {
+			  border: 1px solid #dddddd;
+			  text-align: left;
+			  padding: 8px;
+			}
+			
+			tr:nth-child(even) {
+			  background-color: #dddddd;
+			}
+		</style>
 	</head>
 	<body>
 		<h1> Welcome to the Delete Job page </h1>
@@ -11,11 +28,42 @@
 		<div>
 			<form action="" method="POST">
 				Job Number: <input type="number" name="job_number" value="{{request.form.job_number}}" required><br>
-				<input type="submit" name="Check" value="Check">
+				<input type="submit" name="post_type" value="Check">
 				<input type="reset" name="Reset">
-
 			</form>
 		</div>
+		{%if checked%}
+			{%if error%}
+			<p>{{error}}</p>
+			{%else%}
+			<table style="width:100%">
+				<tr>
+				<th>Job Number</th>
+				<th>List Id.</th>
+				<th>Username</th>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Job Created</th>
+				<th>Planned Calling Date</th>
+				<th>Job Start</th>
+				<th>Job End</th>
+				<th>Job Status</th>
+				</tr>
+				<tr>
+					{%for element in data%}
+					<td>{{element}}</td>
+					{%endfor%}
+				</tr>
+			</table>
+			<br>
+			<form action="" method="POST">
+				<b>Do you want to delete the above job?</b>
+				<input type="submit" name="post_type" value="Yes">
+				<input type="submit" name="post_type" value="No">
+			</form>
+			{%endif%}
+		{%endif%}
+
 		<a href=""></a>
 	</body>
 </html>
