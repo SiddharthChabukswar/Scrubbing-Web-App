@@ -25,7 +25,17 @@ CREATE TABLE Schedules(
 	planned_call_date DATE NOT NULL,
 	job_start_time TIMESTAMP NOT NULL,
 	job_expected_end_time TIMESTAMP NOT NULL,
-	status ENUM('Y', 'N') NOT NULL
+	status ENUM('Y', 'N', 'F') NOT NULL
 	);
 
 INSERT INTO Schedules VALUES('1', '0', 'null', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'N');
+INSERT INTO Schedules VALUES('2', '1', 'null1', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'Y');
+INSERT INTO Schedules VALUES('3', '1', 'null2', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'F');
+INSERT INTO Schedules VALUES('4', '1', 'null1', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'N');
+INSERT INTO Schedules VALUES('5', '3', 'null2', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'Y');
+INSERT INTO Schedules VALUES('6', '3', 'null1', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'F');
+INSERT INTO Schedules VALUES('7', '4', 'null1', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'N');
+INSERT INTO Schedules VALUES('8', '5', 'null3', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'Y');
+INSERT INTO Schedules VALUES('9', '9', 'null3', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'F');
+INSERT INTO Schedules VALUES('10', '0', 'null', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'N');
+INSERT INTO Schedules VALUES('11', '0', 'null', 'null', 'null', '2020-11-18 12:00:00', '2020-11-20', '2020-11-19 09:00:00', '2020-11-19 20:00:00', 'Y');

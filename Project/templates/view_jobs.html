@@ -3,10 +3,72 @@
 	<head>
 		<title>View Jobs</title>
 		<a href="/logout/">Logout</a>
+		<a href="/home/">Home</a>
+		<style>
+			table {
+			  font-family: arial, sans-serif;
+			  border-collapse: collapse;
+			  width: 100%;
+			}
+			
+			td, th {
+			  border: 1px solid #dddddd;
+			  text-align: left;
+			  padding: 8px;
+			}
+			
+			tr:nth-child(even) {
+			  background-color: #dddddd;
+			}
+		</style>
 	</head>
 	<body>
 		<h1> Welcome to the View Jobs page </h1>
 
-		<a href=""></a>
+		<div>
+			<form action="" method="POST">
+				Job Number: <input type="number" name="job_number" value="{{request.form.job_number}}"><br>
+				List Id.: <input type="number" name="list_id" value="{{request.form.list_id}}"><br>
+				Username: <input type="text" name="username" value="{{request.form.username}}"><br>
+				First Name: <input type="text" name="first_name" value="{{request.form.first_name}}"><br>
+				Last Name: <input type="text" name="last_name" value="{{request.form.last_name}}"><br>
+				Planned Calling Date: <input type="date" name="planned_call_date" value="{{request.form.planned_call_date}}"><br>
+				Status: <input type="radio" id="All" name="status" value="All" checked>All
+						<input type="radio" id="Y" name="status" value="Y">Y
+						<input type="radio" id="N" name="status" value="N">N
+						<input type="radio" id="F" name="status" value="F">F<br>
+				<input type="submit" name="search" value="search">
+				<input type="reset" name="Reset">
+			</form>
+		</div>
+
+		<table style="width:100%">
+			<tr>
+			  <th>Job Number</th>
+			  <th>List Id.</th>
+			  <th>Username</th>
+			  <th>First name</th>
+			  <th>Last name</th>
+			  <th>Job Created</th>
+			  <th>Planned Calling Date</th>
+			  <th>Job Start</th>
+			  <th>Job End</th>
+			  <th>Job Status</th>
+			</tr>
+			{%for row in data%}
+			<tr>
+				{%for element in row%}
+				<td>{{element}}</td>
+				{%endfor%}
+			</tr>
+			{%endfor%}
+		</table>
+		{% for i in range(1, possible_pages+1) %}
+			{%if current_page == i%}
+				<a href="{{ url_for('view_jobs', page=i)}}" style="color:red;"><b>{{i}}</b></a>
+			{%else%}
+				<a href="{{ url_for('view_jobs', page=i)}}" style="color:blue;">{{i}}</a>
+			{%endif%}
+		{%endfor%}
 	</body>
 </html>
