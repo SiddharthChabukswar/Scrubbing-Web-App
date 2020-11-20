@@ -6,6 +6,7 @@ from dbconnect import connection
 from MySQLdb import escape_string
 from passlib.hash import sha256_crypt
 from functools import wraps
+from datetime import timedelta
 
 
 ##########################################################################################################################################################################################
@@ -56,13 +57,26 @@ def view_jobs_helper(statement, page):
 
 def delete_job_helper(job_number):
 	error = 'job deletion failed'
-	print(type(job_number))
 	cur, con = connection('scrubbing')
-	cur.execute("SELECT * FROM Schedules WHERE job_number = %s", [job_number])
-	currdata = cur.fetchall()[0]
-	# print(currdata)
+	cur.execute("SELECT * FROM Schedules WHERE job_number >= %s", [job_number])
+	alldata = cur.fetchall()
+	currdata = alldata[0]
+	alldata = alldata[1:]
+	all_data_list = []
+	for i in alldata:
+		all_data_list.append(list(i))
+	alldata = all_data_list	
+	new_start_datetime = currdata[7]
+	new_end_datetime = ''
+	for i in range(0, len(alldata)):
+		timediff = alldata[i][8] - alldata[i][7]
+		new_end_datetime = new_start_datetime + timediff
+		alldata[i][7] = new_start_datetime
+		alldata[i][8] = new_end_datetime
+		new_start_datetime = new_end_datetime + timedelta(minutes=30)
+	for i in range(0, len(alldata)):
+		cur.execute("UPDATE Schedules SET job_start_time = %s, job_expected_end_time = %s WHERE job_number = %s", [alldata[i][7], alldata[i][8], alldata[i][0]])
 	cur.execute("DELETE FROM Schedules WHERE job_number = %s;", [job_number])
-	# Make changes to Schedule	#
 	con.commit()
 	con.close()
 	gc.collect()
