@@ -6,7 +6,7 @@ from dbconnect import connection
 from MySQLdb import escape_string
 from passlib.hash import sha256_crypt
 from functools import wraps
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 ##########################################################################################################################################################################################
@@ -83,6 +83,16 @@ def delete_job_helper(job_number):
 	error = 'job deleted successfully'
 	return error
 
+def check_list_present(list_id):
+	count = 0
+	cur, con = connection('asterisk')
+	cur.execute("SELECT list_id FROM vicidial_lists WHERE list_id = %s", [list_id])
+	data = cur.fetchall()
+	count = len(data)
+	con.close()
+	gc.collect
+	return count
+
 
 ##########################################################################################################################################################################################
 
@@ -136,12 +146,27 @@ def home():
 	return render_template('home.html')
 	
 
-@app.route('/create_job/')
+@app.route('/create_job/', methods = ['GET', 'POST'])
 @login_required
 def create_job():
 	session['del_job_number'] = ''
 	session['statement'] = ''
-	return render_template('create_job.html')
+	error = ''
+	if request.method == 'POST':
+		list_id = request.form['list_id']
+		planned_call_date = datetime.strptime(request.form['call_date'], '%Y-%m-%d').date()
+		# print(list_id, planned_call_date, datetime.now().date())
+		if datetime.now().date() >= planned_call_date:
+			error = "Planned date can't be before today!"
+			return render_template('create_job.html', error = error)
+		list_count = check_list_present(list_id)
+		print(list_count)
+		if list_count == 0:
+			error = "No list with List_id : " + list_id + " found!"
+			return render_template('create_job.html', error = error)
+		return render_template('create_job.html')
+	else:
+		return render_template('create_job.html')
 
 
 @app.route('/delete_job/', methods = ['GET', 'POST'])

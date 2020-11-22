@@ -14,9 +14,11 @@
 				Planned Calling Date: <input type="date" name="call_date" value="{{request.form.call_date}}" required><br>
 				<input type="submit" name="Create" value="Create">
 				<input type="reset" name="Reset">
-
 			</form>
 		</div>
+		{%if error%}
+		<b>{{error}}</b>
+		{%endif%}
 
 		<a href=""></a>
 	</body>

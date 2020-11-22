@@ -3,6 +3,7 @@ GRANT ALL PRIVILEGES ON * . * TO 'scrubbing_dev'@'localhost';
 FLUSH PRIVILEGES;
 
 CREATE DATABASE scrubbing;
+CREATE DATABASE asterisk;
 
 USE scrubbing;
 
@@ -52,3 +53,15 @@ INSERT INTO Schedules VALUES('15', '3', 'ashwini', 'ashwini', 'harle', '2020-11-
 INSERT INTO Schedules VALUES('16', '4', 'yashh', 'yashh', 'jaggi', '2020-11-20 12:00:00', '2020-12-01', '2020-11-21 23:30:00', '2020-11-22 09:30:00', 'N');
 INSERT INTO Schedules VALUES('17', '2', 'ashwini', 'ashwini', 'harle', '2020-11-20 13:00:00', '2020-11-29', '2020-11-22 10:00:00', '2020-11-22 20:00:00', 'N');
 INSERT INTO Schedules VALUES('18', '1', 'yashh', 'yashh', 'jaggi', '2020-11-20 13:30:00', '2020-12-30', '2020-11-22 20:30:00', '2020-11-23 06:30:00', 'N');
+
+USE asterisk;
+
+DROP TABLE vicidial_lists;
+
+CREATE TABLE vicidial_lists(
+	list_id BIGINT(14) PRIMARY KEY NOT NULL,
+	list_name VARCHAR(30) NOT NULL
+	);
+
+INSERT INTO vicidial_lists VALUES('2020', 'List 1');
+INSERT INTO vicidial_lists VALUES('2021', 'List 2');
