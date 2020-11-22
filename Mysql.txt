@@ -97,3 +97,4 @@ INSERT INTO vicidial_list VALUES('18', '2020', '91', '1000000017');
 INSERT INTO vicidial_list VALUES('19', '2020', '91', '1000000018');
 INSERT INTO vicidial_list VALUES('20', '2021', '91', '1000000019');
 INSERT INTO vicidial_list VALUES('21', '2021', '91', '1000000020');
+INSERT INTO vicidial_list VALUES('22', '2022', '91', '1000000021');
