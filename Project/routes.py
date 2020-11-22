@@ -93,6 +93,81 @@ def check_list_present(list_id):
 	gc.collect
 	return count
 
+def check_lead_count(list_id):
+	count = 0
+	cur, con = connection('asterisk')
+	cur.execute("SELECT count(*) FROM vicidial_list WHERE list_id = %s", [list_id])
+	count = cur.fetchall()[0][0]
+	con.close()
+	gc.collect()
+	return count
+
+def next_start_date():
+	offset = timedelta(minutes=30)
+	cur, con = connection('scrubbing')
+	cur.execute("SELECT count(*) FROM Schedules")
+	count = cur.fetchall()[0][0] - 1
+	if count >= 0:
+		cur.execute("SELECT job_expected_end_time FROM Schedules LIMIT 1 OFFSET %s;", [count])
+		last_element_date = cur.fetchall()[0][0]
+		# print(last_element_date)
+		con.close()
+		gc.collect()
+		if datetime.now() > last_element_date:
+			return datetime.now() + offset
+		else:
+			return last_element_date + offset
+	else:
+		con.close()
+		gc.collect()
+		return datetime.now() + offset
+
+def estimate_end_date(planned_start_date, lead_count):
+	scale = 4
+	seconds = lead_count * scale
+	offset = timedelta(seconds=seconds)
+	return planned_start_date + offset
+
+def check_dates_still_valid(planned_start_date):
+	offset = timedelta(minutes=20)
+	cur, con = connection('scrubbing')
+	cur.execute("SELECT count(*) FROM Schedules")
+	count = cur.fetchall()[0][0] - 1
+	if count >= 0:
+		cur.execute("SELECT job_number, job_expected_end_time FROM Schedules LIMIT 1 OFFSET %s;", [count])
+		data = cur.fetchall()
+		new_token = data[0][0] + 1
+		last_element_date = data[0][1] + offset
+		# print(last_element_date)
+		con.close()
+		gc.collect()
+		if last_element_date > planned_start_date:
+			return False, 0
+		else:
+			return True, new_token
+	else:
+		con.close()
+		gc.collect()
+		return True, 1
+
+def add_job_helper(job_number):
+	username = session['username']
+	dbfirstname = session['first_name']
+	dblastname = session['last_name']
+	list_id = session['list_id']
+	job_created = datetime.now()
+	planned_call_date = datetime.strptime(session['planned_call_date'], '%Y-%m-%d').date()
+	planned_start_date = session['planned_start_date']
+	estimated_end_date = session['estimated_end_date']
+	# print(planned_call_date, type(planned_call_date))
+	# print(planned_start_date, type(planned_start_date))
+	status = 'N'
+	parameters = [job_number, list_id, username, dbfirstname, dblastname, job_created, planned_call_date, planned_start_date, estimated_end_date, status]
+	cur, con = connection('scrubbing')
+	cur.execute("INSERT INTO Schedules VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);", parameters)
+	con.commit()
+	con.close()
+	gc.collect()
 
 ##########################################################################################################################################################################################
 
@@ -141,6 +216,10 @@ def logout():
 @app.route('/home/')
 @login_required
 def home():
+	session['list_id'] = ''
+	session['planned_call_date'] = ''
+	session['planned_start_date'] = ''
+	session['estimated_end_date'] = ''
 	session['del_job_number'] = ''
 	session['statement'] = ''
 	return render_template('home.html')
@@ -152,19 +231,45 @@ def create_job():
 	session['del_job_number'] = ''
 	session['statement'] = ''
 	error = ''
+	log = ''
 	if request.method == 'POST':
-		list_id = request.form['list_id']
-		planned_call_date = datetime.strptime(request.form['call_date'], '%Y-%m-%d').date()
-		# print(list_id, planned_call_date, datetime.now().date())
-		if datetime.now().date() >= planned_call_date:
-			error = "Planned date can't be before today!"
-			return render_template('create_job.html', error = error)
-		list_count = check_list_present(list_id)
-		print(list_count)
-		if list_count == 0:
-			error = "No list with List_id : " + list_id + " found!"
-			return render_template('create_job.html', error = error)
-		return render_template('create_job.html')
+		if request.form['post_type'] == 'Check':
+			list_id = request.form['list_id']
+			planned_call_date = datetime.strptime(request.form['call_date'], '%Y-%m-%d').date()
+			# print(planned_call_date, type(planned_call_date))
+			# print(list_id, planned_call_date, datetime.now().date())
+			if datetime.now().date() >= planned_call_date:
+				error = "Planned date can't be before today!"
+				return render_template('create_job.html', error = error)
+			list_count = check_list_present(list_id)
+			if list_count == 0:
+				error = "No list with List_id : " + list_id + " found!"
+				return render_template('create_job.html', error = error)
+			lead_count = check_lead_count(list_id)
+			if lead_count == 0:
+				error = "No leads in list with List_id : " + list_id + " found!"
+				return render_template('create_job.html', error = error)
+			planned_start_date = next_start_date()
+			estimated_end_date = estimate_end_date(planned_start_date, lead_count)
+			# print(planned_start_date, estimated_end_date)
+			session['list_id'] = list_id
+			session['planned_call_date'] = str(planned_call_date)
+			session['planned_start_date'] = planned_start_date
+			session['estimated_end_date'] = estimated_end_date
+			return render_template('create_job.html', checked = True, list_id = list_id, lead_count = lead_count, planned_start_date = planned_start_date, estimated_end_date = estimated_end_date)
+		elif request.form['post_type'] == 'Yes':
+			planned_start_date = session['planned_start_date']
+			still_valid, new_token = check_dates_still_valid(planned_start_date)
+			if still_valid == True:
+				add_job_helper(new_token)
+				log = 'Job Added successfully'
+				return render_template('create_job.html', log = log, job_number = new_token)
+			else:
+				error = 'Dates Expired, please try adding again.'
+				return render_template('create_job.html', error = error)
+		else:
+			log = 'Job Addition Cancelled'
+			return render_template('create_job.html', log = log)
 	else:
 		return render_template('create_job.html')
 
@@ -173,6 +278,11 @@ def create_job():
 @login_required
 def delete_job():
 	error = ''
+	session['list_id'] = ''
+	session['planned_call_date'] = ''
+	session['planned_start_date'] = ''
+	session['estimated_end_date'] = ''
+	session['statement'] = ''
 	if request.method == 'POST':
 		if request.form['post_type'] == 'Check':
 			session['del_job_number'] = ''
@@ -200,7 +310,6 @@ def delete_job():
 			return render_template('delete_job.html', checked = True, error = error)
 	else:
 		session['del_job_number'] = ''
-		session['statement'] = ''
 		return render_template('delete_job.html')
 
 
@@ -208,7 +317,11 @@ def delete_job():
 @app.route('/view_jobs/page/<int:page>', methods = ['GET', 'POST'])
 @login_required
 def view_jobs(page):
+	session['list_id'] = ''
 	session['del_job_number'] = ''
+	session['planned_call_date'] = ''
+	session['planned_start_date'] = ''
+	session['estimated_end_date'] = ''
 	if request.method == 'POST':
 		page = 1
 		job_number = request.form['job_number']
@@ -268,6 +381,10 @@ def view_jobs(page):
 @app.route('/voice_generator/')
 @login_required
 def voice_generator():
+	session['list_id'] = ''
+	session['planned_call_date'] = ''
+	session['planned_start_date'] = ''
+	session['estimated_end_date'] = ''
 	session['del_job_number'] = ''
 	session['statement'] = ''
 	return render_template('voice_generator.html')

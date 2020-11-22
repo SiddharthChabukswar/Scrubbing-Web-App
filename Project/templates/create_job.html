@@ -34,7 +34,7 @@
 
                                <div class="form-group row">
 									<div class="col-12 col-sm-3">
-                                        <input type="submit" value="Check" name="check" class=" form-control btn btn-block btn-primary"/>
+                                        <input type="submit" value="Check" name="post_type" class=" form-control btn btn-block btn-primary"/>
                                     </div>
 									<div class="col-12 col-sm-3">
                                         <input type="reset" value="Reset" name="reset" class=" form-control btn btn-block btn-info"/>
@@ -51,6 +51,27 @@
 
     {%if error%}
 		<b>{{error}}</b>
+    {%endif%}
+
+    {%if log%}
+		<b>{{log}}</b>
+    {%endif%}
+
+    {%if job_number%}
+		<b>Your Job Number is :: {{job_number}}</b>
+    {%endif%}
+
+    {%if checked%}
+
+    <form action="" method="POST">
+        <p>The list {{list_id}} contains {{lead_count}} leads.</p><br>
+        <p>A new job will be created with the following details: </p><br>
+        <p>Planned Start Date : {{planned_start_date}}</p><br>
+        <p>Estimated End Date : {{estimated_end_date}}</p><br>
+        <h2>Do you want to add the new job?</h2>
+        <input type="submit" name="post_type" value="Yes">
+        <input type="submit" name="post_type" value="No">
+    </form>  
     {%endif%}
     
 	</body>
