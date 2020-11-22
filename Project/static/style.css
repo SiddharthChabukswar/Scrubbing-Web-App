@@ -1,0 +1,96 @@
+.loginbox
+{
+	position : absolute;
+	border-radius: 15px;
+	border: 2px solid #eaecef;
+	top:50%;
+	left : 50%;
+	transform : translate(-50%,-50%);
+	width:350px;
+	height:400px;
+	box-sizing:border-box;
+	padding: 80px 40px;
+	background: #f6f8fa
+}
+
+.birdy
+{
+	width:150px;
+	height:150px;
+	border-radius: 10%;
+	overflow: hidden;
+	position: absolute;
+	top: calc(-200px/2);
+	left: calc(50% - 100px);
+}
+
+.welcome
+{
+	text-align: center;
+	font-weight: bolder;
+	font-size: 1.4em;
+	font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Fira Sans",Ubuntu,Oxygen,"Oxygen Sans",Cantarell,"Droid Sans","Apple Color Emoji","Segoe UI Emoji","Segoe UI Emoji","Segoe UI Symbol","Lucida Grande",Helvetica,Arial,sans-serif;
+}
+
+.fields
+{
+	text-align: center;
+	position : absolute;
+	margin-top: 10%;
+	top : 50%;
+	left : 50%;
+	transform : translate(-50%,-50%);
+	width:280px;
+	height:360px;
+}
+
+
+.loginbox input[type="text"],
+.loginbox input[type="password"]
+{
+	padding-left: 8px;
+	border: 1px solid #e1e4e8;
+	border-radius: 10px;
+	background: #ffffff;
+	outline: none;
+	height: 40px;
+	font-size: 16px;
+}
+
+.sbtBtn
+{
+	text-align: center;
+}
+
+.loginbox input[type="submit"]
+{
+	border: none;
+	outline: none;
+	height: 40px;
+	color: #fff;
+	font-size: 16px;
+	background: #e61c0d;
+	cursor: pointer;
+	border-radius: 20px;
+}
+
+.loginbox input[type="submit"]:hover
+{
+	background: #ff7820;
+	color: #fff;
+}
+
+.branding
+{
+	text-decoration : none;
+	color: #000;
+	text-align: center;
+	font-size: 1.4em;
+	font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Fira Sans",Ubuntu,Oxygen,"Oxygen Sans",Cantarell,"Droid Sans","Apple Color Emoji","Segoe UI Emoji","Segoe UI Emoji","Segoe UI Symbol","Lucida Grande",Helvetica,Arial,sans-serif;
+
+}
+
+.branding:hover
+{
+	text-decoration : underline;
+}

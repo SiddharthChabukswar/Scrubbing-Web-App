@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>login</title>
-	</head>
-	<body>
-		<h1> Welcome to the LOGIN page </h1>
-
-		<div>
+<head>
+	<meta charset="utf-8">
+	<title>Login</title>
+	<link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+<body>
+	<a href="https://www.ravenn.tech" class="branding"> Ravenn</a>
+	<div class="loginbox">
+		<img src="../static/birdy.png" class="birdy">
+		<div class="fields">
+			<p class="welcome"> Welcome Back </p>
 			<form action="" method="POST">
-				Username: <input type="text" name="username" value="{{request.form.username}}" required><br>
-				Password: <input type="password" name="password" value="{{request.form.password}}" required><br>
-				<input type="submit" name="login" value="Login">
-				<input type="reset" name="Reset">
+				</br></br>
+				<input type="text" name="username" placeholder="Username" value="{{request.form.username}}" required></br></br> 
+				<input type="password" name="password" placeholder="Password" value="{{request.form.password}}" required> </body></br></br>
+				<div class="sbtBtn">
+					<input type="submit" name="submit" value="Login"></br></br>
+				</div>
 			</form>
 			<p>{{error}}</p>
-		</div>
-
-	</body>
+		</div> 
+	</div>
+</body>
 </html>
