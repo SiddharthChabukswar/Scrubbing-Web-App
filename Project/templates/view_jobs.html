@@ -1,49 +1,128 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>View Jobs</title>
-		<a href="/logout/">Logout</a>
-		<a href="/home/">Home</a>
-		<style>
-			table {
-			  font-family: arial, sans-serif;
-			  border-collapse: collapse;
-			  width: 100%;
-			}
-			
-			td, th {
-			  border: 1px solid #dddddd;
-			  text-align: left;
-			  padding: 8px;
-			}
-			
-			tr:nth-child(even) {
-			  background-color: #dddddd;
-			}
-		</style>
+	<title>View Jobs</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 	</head>
 	<body>
-		<h1> Welcome to the View Jobs page </h1>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Here goes Logo</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-		<div>
-			<form action="" method="POST">
-				Job Number: <input type="number" name="job_number" value="{{request.form.job_number}}"><br>
-				List Id.: <input type="number" name="list_id" value="{{request.form.list_id}}"><br>
-				Username: <input type="text" name="username" value="{{request.form.username}}"><br>
-				First Name: <input type="text" name="first_name" value="{{request.form.first_name}}"><br>
-				Last Name: <input type="text" name="last_name" value="{{request.form.last_name}}"><br>
-				Planned Calling Date: <input type="date" name="planned_call_date" value="{{request.form.planned_call_date}}"><br>
-				Status: <input type="radio" id="All" name="status" value="All" checked>All
-						<input type="radio" id="Y" name="status" value="Y">Y
-						<input type="radio" id="N" name="status" value="N">N
-						<input type="radio" id="F" name="status" value="F">F<br>
-				<input type="submit" name="search" value="search">
-				<input type="reset" name="Reset">
-			</form>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/home/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Create</a>
+      </li>
+	  <li class="nav-item">
+        <a class="nav-link" href="#">Update</a>
+      </li>
+	  <li class="nav-item active">
+        <a class="nav-link" href="#">View jobs</a>
+      </li>
+	  <li class="nav-item">
+        <a class="nav-link" href="#">Voice Generator</a>
+      </li>
+    </ul>
+	<button type="button"  class="btn btn-primary" onclick="location.href = '/logout/';">Log out</button>
+  </div>
+</nav>
+	<div class="container">
+	<div class="row row-content">
+	<div class="col my-2">
+	</div>
+	</div>
+	<div class="row row-content">
+		<div class="col-12 d-flex justify-content-center">
+		<p class="text-secondary display-4">View all jobs</p>
 		</div>
-
-		<table style="width:100%">
-			<tr>
+	</div>
+	</div>
+	        <div class="row row-content align-items-center">
+            <div class="col-8 offset-sm-2">
+                    <div class="card">
+                        <h6 class="card-header bg-dark text-white d-flex justify-content-center">Apply filters to your job</h6>
+                        <div class="card-body">
+                            <form action="" method="POST">
+                                <div class="form-group row">
+                                    <div class="col-12 col-sm-2">
+                                        <p><b>Job number</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="number" name="job_number" value="{{request.form.job_number}}">
+                                    </div>
+									<div class="col-12 col-sm-2">
+                                        <p><b>List ID</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="text" name="list_id" value="{{request.form.list_id}}">
+                                    </div>
+								</div>
+								<div class="form-group row">
+                                    <div class="col-12 col-sm-2">
+                                        <p><b>Customer name</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="text" name="first_name" value="{{request.form.first_name}}">
+                                    </div>
+									<div class="col-12 col-sm-2">
+                                        <p><b>Lastname</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="text" name="last_name" value="{{request.form.last_name}}">
+                                    </div>
+								</div>
+								<div class="form-group row">
+                                    <div class="col-12 col-sm-2">
+                                        <p><b>Agent ID</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="text" name="username" value="{{request.form.username}}">
+                                    </div>
+									<div class="col-12 col-sm-2">
+                                        <p><b>Planned call-date</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="date" name="planned_call_date" value="{{request.form.planned_call_date}}">
+                                    </div>
+								</div>
+								<div class="form-group row">
+									<div class="btn-group btn-group-toggle col-sm-6" data-toggle="buttons">
+										<label class="btn btn-secondary active">
+											<input type="radio" name="status" id="All" autocomplete="off" value="All" checked> All
+										</label>
+										<label class="btn btn-secondary">
+											<input type="radio" name="status" id="Y" autocomplete="off" value="Y"> Completed
+										</label>
+										<label class="btn btn-secondary">
+											<input type="radio" name="status" id="N" autocomplete="off" value="N"> Upcoming
+										</label>
+										<label class="btn btn-secondary">
+											<input type="radio" name="status" id="F" autocomplete="off" value="F"> Failed
+										</label>
+									</div>
+									<div class="col-12 col-sm-3">
+                                        <input type="submit" value="Search" name="search" class=" form-control btn btn-block btn-primary"/>
+                                   </div>
+								<div class="col-12 col-sm-3">
+                                        <input type="reset" value="Reset" name="reset" class=" form-control btn btn-block btn-info" onclick="resetAll()"/>
+                                    </div>
+                                </div>
+								
+                            </form>
+                        </div>
+                    </div>
+			  <h5 class="d-flex justify-content-center mt-2 text-danger">{{error}}</h5>
+            </div>
+        </div>
+		<div id="tabularSection1" class="container-fluid mt-3">
+		<table class="table table-hover">
+			<tr class="bg-warning">
 			  <th>Job Number</th>
 			  <th>List Id.</th>
 			  <th>Username</th>
@@ -58,11 +137,16 @@
 			{%for row in data%}
 			<tr>
 				{%for element in row%}
-				<td>{{element}}</td>
+					{%if element == row[0]%}
+						<td data-toggle="tooltip" title="Copy Job-ID" onclick="copytext(this)" name="job_num">{{element}}</td>
+					{%else%}
+						<td>{{element}}</td>
+					{%endif%}
 				{%endfor%}
 			</tr>
 			{%endfor%}
 		</table>
+		</div>
 		{% for i in range(1, possible_pages+1) %}
 			{%if current_page == i%}
 				<a href="{{ url_for('view_jobs', page=i)}}" style="color:red;"><b>{{i}}</b></a>
@@ -70,5 +154,30 @@
 				<a href="{{ url_for('view_jobs', page=i)}}" style="color:blue;">{{i}}</a>
 			{%endif%}
 		{%endfor%}
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js" integrity="sha512-7yA/d79yIhHPvcrSiB8S/7TyX0OxlccU8F/kuB8mHYjLlF1MInPbEohpoqfz0AILoq5hoD7lELZAYYHbyeEjag==" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+		<script>
+		$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+		})
+		</script>
+		<script>
+		function copytext(x)
+		{
+		const copyText = x.innerText;
+		const el = document.createElement("input");
+		document.body.appendChild(el);
+		el.value = copyText;
+		console.log(el.value);
+		el.select();
+		document.execCommand("copy");
+		document.body.removeChild(el);
+		}
+		</script>
+		<script>
+
+
+		</script>
 	</body>
 </html>
