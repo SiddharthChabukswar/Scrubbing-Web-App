@@ -5,6 +5,7 @@
 {% block title %}Create Job{% endblock %}
 
 {% block body %}
+
 	<div class="container">
 	<div class="row row-content">
 	<div class="col my-2">
@@ -13,67 +14,107 @@
 	<div class="row row-content">
 		<div class="col-12 d-flex justify-content-center">
 		<p class="text-secondary display-3">Create Job</p>
+	</div>
+	  </div>
+	  <div class="row row-content mb-1">
+		<div class="col-12 d-flex justify-content-center">
+		<h4 class="text-secondary">Create a new job using List ID.</h4>
+	  </div>
+	  </div>
+
+	</div>
+			<div class="row row-content align-items-center">
+			<div class="col-8 offset-sm-2">
+					<div class="card">
+						<h6 class="card-header bg-dark text-white d-flex justify-content-center">Enter the List ID to create job.</h6>
+						<div class="card-body">
+							<form action="" method="POST">
+								<div class="col-sm-8" style="padding-top: 5px;">                               
+									  <b>List ID: <input type="number" name="list_id" value="{{request.form.list_id}}" required style="height:30px"></b><br>
+										 
+								</div> 
+								<div class="col-sm-8" style="padding-top: 5px;">                               
+
+								<b> Planned Calling Date: <input type="date" name="call_date" value="{{request.form.call_date}}" required></b><br> 
+                                </div>
+                                <br>
+
+							   <div class="form-group row">
+									<div class="col-12 col-sm-3">
+										<input type="submit" value="Check" name="post_type" class=" form-control btn btn-block btn-primary"/>
+									</div>
+									<div class="col-12 col-sm-3">
+										<input type="reset" value="Reset" name="reset" class=" form-control btn btn-block btn-info"/>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+			</div>
 		</div>
 	</div>
 
-	</div>
-	        <div class="row row-content align-items-center">
-            <div class="col-8 offset-sm-2">
-                    <div class="card">
-                        <h6 class="card-header bg-dark text-white d-flex justify-content-center">Create a job using the list ID.</h6>
-                        <div class="card-body">
-                            <form action="" method="POST">
-                                <div class="col-sm-8" style="padding-top: 5px;">                               
-                                      <b>List ID: <input type="number" name="list_id" value="{{request.form.list_id}}" required style="height:30px"></b><br>
-                                         
-                                </div> 
-                                <div class="col-sm-8" style="padding-top: 5px;">                               
+	{%if error%}
+		<b>{{error}}</b>
+	{%endif%}
 
-                                <b> Planned Calling Date: <input type="date" name="call_date" value="{{request.form.call_date}}" required></b><br> 
-                                </div>
+	{%if log%}
+		<b>{{log}}</b>
+	{%endif%}
 
-                               <div class="form-group row">
-									<div class="col-12 col-sm-3">
-                                        <input type="submit" value="Check" name="post_type" class=" form-control btn btn-block btn-primary"/>
-                                    </div>
-									<div class="col-12 col-sm-3">
-                                        <input type="reset" value="Reset" name="reset" class=" form-control btn btn-block btn-info"/>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-            </div>
-        </div>
+	{%if job_number%}
+		<div>
+			<div class="col-12 d-flex justify-content-center">
+				<h4 class="text-secondary">Your Job Number is :: {{job_number}}</h4>
+			</div>
+	{%endif%}
+
+	{%if checked%}
+			<br>
+			<div class="row row-content mb-1">
+				<div class="col-12 d-flex justify-content-center">
+					<h4 class="text-secondary"><p>The list {{list_id}} contains {{lead_count}} leads.</p></h4>
+				</div>
+			</div>
+			<div class="row row-content align-items-center">
+				<div class="col-4 offset-sm-2">
+					<div class="card">
+						<h6 class="card-header bg-danger text-white text-white d-flex justify-content-center">A new job will be created with the following details:</h6>
+						<div class="card-body">
+							<form action="" method="POST">     
+								<h5><p>Planned Start Date : {{planned_start_date}}</p></h5><br>
+								<h5><p>Estimated End Date : {{estimated_end_date}}</p></h5><br>
+							</form>
+						</div>
+					</div>
+			</div>
+
+			<div class="col-4">
+				<div class="card">
+					<h6 class="card-header bg-danger text-white text-white d-flex justify-content-center">Confirm creation</h6>
+						<div class="card-body">
+							<form action="" method="POST">
+								<div class="form-group row">
+									<div class="col-12 d-flex justify-content-center">
+										<h4>Do you want to add the new job?</h4>
+									</div>
+								</div>
+								<div class="form-group row">
+									<div class="col-6 col-sm-3 offset-sm-3">
+										<input type="submit" name="post_type" value="Yes" class="form-control btn btn-block btn-danger text-white">
+									</div>
+									<div class="col-6 col-sm-3">
+										<input type="submit" name="post_type" value="No" class="btn btn-block btn-success text-white">
+									</div>
+								</div>
+							</form>
+						</div>
+				</div>
+			</div>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-
-    {%if error%}
-		<b>{{error}}</b>
-    {%endif%}
-
-    {%if log%}
-		<b>{{log}}</b>
-    {%endif%}
-
-    {%if job_number%}
-		<b>Your Job Number is :: {{job_number}}</b>
-    {%endif%}
-
-    {%if checked%}
-
-    <form action="" method="POST">
-        <p>The list {{list_id}} contains {{lead_count}} leads.</p><br>
-        <p>A new job will be created with the following details: </p><br>
-        <p>Planned Start Date : {{planned_start_date}}</p><br>
-        <p>Estimated End Date : {{estimated_end_date}}</p><br>
-        <h2>Do you want to add the new job?</h2>
-        <input type="submit" name="post_type" value="Yes">
-        <input type="submit" name="post_type" value="No">
-    </form>  
-    {%endif%}
-    
+		{%endif%}
 	</body>
 </html>
 
