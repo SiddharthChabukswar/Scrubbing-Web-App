@@ -20,4 +20,5 @@ python routes.py
 - Goto: http://127.0.0.1:5000/
 - for login, username==password
 
+for Windows 10 : Install FFMPEG. (See guide: https://youtu.be/qjtmgCb8NcE)
 
