@@ -3,12 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<title>Login</title>
-	<link rel="stylesheet" type="text/css" href="../static/style.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'style.css')}}">
 </head>
 <body>
 	<div class="loginbox">
 		<a href="https://www.ravenn.tech" target="_blank">
-			<img src="../static/birdy.png" href="https://www.ravenn.tech" class="birdy">
+			<img src="{{ url_for('static', filename = 'birdy.png')}}" href="https://www.ravenn.tech" class="birdy">
 		</a>
 		<div class="fields">
 			<p class="welcome"> Welcome Back </p>

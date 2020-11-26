@@ -98,7 +98,7 @@
 		] %}
 		
 		<div class="navbar" id="nav">
-			<a href="https://www.ravenn.tech" class="navbar-brand" target="_blank"><img src="../static/birdy.png"></a>
+			<a href="https://www.ravenn.tech" class="navbar-brand" target="_blank"><img src="{{ url_for('static', filename = 'birdy.png')}}"></a>
 			<div class="navbar-right">
 				<div class="fields">
 					{% for href, id, caption in navigation_bar %}
