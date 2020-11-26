@@ -7,6 +7,7 @@ from MySQLdb import escape_string
 from passlib.hash import sha256_crypt
 from functools import wraps
 from datetime import timedelta, datetime
+from voice_generator import GenerateVoice
 
 
 ##########################################################################################################################################################################################
@@ -163,11 +164,30 @@ def add_job_helper(job_number):
 	# print(planned_start_date, type(planned_start_date))
 	status = 'N'
 	parameters = [job_number, list_id, username, dbfirstname, dblastname, job_created, planned_call_date, planned_start_date, estimated_end_date, status]
+	# print(parameters)
 	cur, con = connection('scrubbing')
 	cur.execute("INSERT INTO Schedules VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);", parameters)
 	con.commit()
 	con.close()
 	gc.collect()
+
+def expected_time_generator(lead_count):
+	scale = 4
+	seconds = lead_count * scale
+	minutes = float(seconds/60)
+	return "%.2f" % minutes
+
+def log_activity_voice_generator(list_id, username):
+	log_created = datetime.now()
+	cur, con = connection('scrubbing')
+	cur.execute("SELECT count(*) FROM GeneratorLogs")
+	log_number = cur.fetchall()[0][0] + 1
+	parameters = [log_number, list_id, username, log_created, 'N']
+	cur.execute("INSERT INTO GeneratorLogs VALUES (%s, %s, %s, %s, %s);", parameters)
+	con.commit()
+	con.close()
+	gc.collect()
+	return
 
 ##########################################################################################################################################################################################
 
@@ -378,16 +398,52 @@ def view_jobs(page):
 			return render_template('view_jobs.html', data = reversed(data), possible_pages = possible_pages, current_page = page)
 
 
-@app.route('/voice_generator/')
+@app.route('/voice_generator/', methods = ['GET', 'POST'])
 @login_required
 def voice_generator():
-	session['list_id'] = ''
-	session['planned_call_date'] = ''
-	session['planned_start_date'] = ''
-	session['estimated_end_date'] = ''
-	session['del_job_number'] = ''
-	session['statement'] = ''
-	return render_template('voice_generator.html')
+	error = ''
+	if request.method == 'POST':
+		if request.form['post_type'] == 'Check':
+			# Check if list_id present, get leads count, generate estimated time,  ask for confirmation
+			list_id = request.form['list_id']
+			list_count = check_list_present(list_id)
+			list_count = check_list_present(list_id)
+			if list_count == 0:
+				error = "No list with List_id : " + list_id + " found!"
+				return render_template('voice_generator.html', error = error)
+			lead_count = check_lead_count(list_id)
+			if lead_count == 0:
+				error = "No leads in list with List_id : " + list_id + " found!"
+				return render_template('voice_generator.html', error = error)
+			elif lead_count > 1000:
+				error = "Lead count exceeds limit of 1000, please use"
+				return render_template('voice_generator.html', error = error, create_job = True)
+			expected_time = expected_time_generator(lead_count)
+			session['list_id'] = list_id
+			return render_template('voice_generator.html', checked = True, list_id = list_id, lead_count = lead_count, expected_time = expected_time)
+		elif request.form['post_type'] == 'Yes':
+			# Run TTS Script, Write npy data
+			list_id = session['list_id']
+			username = session['username'].decode("utf-8")
+			log_activity_voice_generator(list_id, username)
+			# Log created successfully
+			VoiceGenerator = GenerateVoice(list_id)
+			VoiceGenerator.start()
+			return render_template('voice_generator.html')
+		elif request.form['post_type'] == 'No':
+			# Cancelled Processing
+			error = 'Voice Generation cancelled!!'
+			return render_template('voice_generator.html', error = error)
+		else:
+			return render_template('voice_generator.html')
+	else:
+		session['list_id'] = ''
+		session['planned_call_date'] = ''
+		session['planned_start_date'] = ''
+		session['estimated_end_date'] = ''
+		session['del_job_number'] = ''
+		session['statement'] = ''
+		return render_template('voice_generator.html')
 
 
 if __name__ == "__main__":
