@@ -1,2 +1,4 @@
 .vscode
 readme.txt
+out_wav/*
+!out_wav/.gitkeep 
