@@ -52,18 +52,14 @@ class GenerateVoice:
 		creation_log = []
 		try:
 			dirpath = self.dirpath
-			# service = self.service
+			service = self.service
 			list_id = self.list_id
-			print(list_id, type(list_id))
 			cur, con = connection('asterisk')
-			print("ERRORRRRR!!!!!!!!!!!!!!")
 			cur.execute("SELECT lead_id, phone_code, phone_number, first_name, last_name FROM vicidial_list WHERE list_id = %s", [list_id])
-			print("ERRORRRRR!!!!!!!!!!!!!!")
 			result = cur.fetchall()
 			limit = 1001
 			countr = 0
 			for row in result:
-				print(row)
 				lead_id = row[0]
 				phone_code = row[1]
 				phone_number = row[2]
@@ -72,13 +68,12 @@ class GenerateVoice:
 				namefile1 = dirpath+'/'+str(phone_code)+str(phone_number)+'1.wav'
 				namefile = dirpath+'/'+str(phone_code)+str(phone_number)+'.wav'
 				print(first_name+" "+last_name)
-				print(namefile, namefile1)
-				# if os.path.exists(namefile) == False and os.path.isfile(namefile) == False:
-				# 	with open(join(dirname(__file__), namefile1), 'wb') as audio_file:
-				# 		response = service.synthesize(first_name+' '+last_name, accept='audio/wav', voice="en-US_MichaelV2Voice").get_result()
-				# 		audio_file.write(response.content)
-				# 		os.system('ffmpeg -loglevel quiet -i '+namefile1+' -ar 8000 '+namefile)
-				# 		os.remove(namefile1)
+				if os.path.exists(namefile) == False and os.path.isfile(namefile) == False:
+					with open(join(dirname(__file__), namefile1), 'wb') as audio_file:
+						response = service.synthesize(first_name+' '+last_name, accept='audio/wav', voice="en-US_MichaelV2Voice").get_result()
+						audio_file.write(response.content)
+					os.system('ffmpeg -loglevel quiet -i '+namefile1+' -ar 8000 '+namefile)
+					os.remove(namefile1)
 				timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 				params = [lead_id, timestamp, first_name, last_name, phone_code, phone_number, list_id, None, None, 'NA', 0, 0]
 				creation_log.append(params)
