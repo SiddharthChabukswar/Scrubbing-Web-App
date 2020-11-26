@@ -1,4 +1,4 @@
 .vscode
 readme.txt
-out_wav/*
-!out_wav/.gitkeep 
+Project/out_wav/*
+!Project/out_wav/.gitkeep

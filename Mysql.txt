@@ -77,7 +77,9 @@ CREATE TABLE vicidial_list(
 	lead_id INT(9) UNSIGNED PRIMARY KEY NOT NULL,
 	list_id BIGINT(14) NOT NULL,
 	phone_code VARCHAR(10) NOT NULL, 
-	phone_number VARCHAR(18) NOT NULL
+	phone_number VARCHAR(18) NOT NULL,
+	first_name VARCHAR(30), 
+	last_name VARCHAR(30)
 	);
 
 INSERT INTO vicidial_lists VALUES('2020', 'List 1');
@@ -85,25 +87,25 @@ INSERT INTO vicidial_lists VALUES('2021', 'List 2');
 INSERT INTO vicidial_lists VALUES('2022', 'List 2');
 
 
-INSERT INTO vicidial_list VALUES('1', '2020', '91', '1000000000');
-INSERT INTO vicidial_list VALUES('2', '2021', '91', '1000000001');
-INSERT INTO vicidial_list VALUES('3', '2022', '91', '1000000002');
-INSERT INTO vicidial_list VALUES('4', '2020', '91', '1000000003');
-INSERT INTO vicidial_list VALUES('5', '2021', '91', '1000000004');
-INSERT INTO vicidial_list VALUES('6', '2022', '91', '1000000005');
-INSERT INTO vicidial_list VALUES('7', '2020', '91', '1000000006');
-INSERT INTO vicidial_list VALUES('8', '2021', '91', '1000000007');
-INSERT INTO vicidial_list VALUES('9', '2022', '91', '1000000008');
-INSERT INTO vicidial_list VALUES('10', '2020', '91', '1000000009');
-INSERT INTO vicidial_list VALUES('11', '2021', '91', '1000000010');
-INSERT INTO vicidial_list VALUES('12', '2022', '91', '1000000011');
-INSERT INTO vicidial_list VALUES('13', '2020', '91', '1000000012');
-INSERT INTO vicidial_list VALUES('14', '2021', '91', '1000000013');
-INSERT INTO vicidial_list VALUES('15', '2022', '91', '1000000014');
-INSERT INTO vicidial_list VALUES('16', '2020', '91', '1000000015');
-INSERT INTO vicidial_list VALUES('17', '2020', '91', '1000000016');
-INSERT INTO vicidial_list VALUES('18', '2020', '91', '1000000017');
-INSERT INTO vicidial_list VALUES('19', '2020', '91', '1000000018');
-INSERT INTO vicidial_list VALUES('20', '2021', '91', '1000000019');
-INSERT INTO vicidial_list VALUES('21', '2021', '91', '1000000020');
-INSERT INTO vicidial_list VALUES('22', '2022', '91', '1000000021');
+INSERT INTO vicidial_list VALUES('1', '2020', '91', '1000000000', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list VALUES('2', '2021', '91', '1000000001', 'yashh', 'jaggi');
+INSERT INTO vicidial_list VALUES('3', '2022', '91', '1000000002', 'heramb', 'joshi');
+INSERT INTO vicidial_list VALUES('4', '2020', '91', '1000000003', 'ashwini', 'harle');
+INSERT INTO vicidial_list VALUES('5', '2021', '91', '1000000004', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list VALUES('6', '2022', '91', '1000000005', 'yashh', 'jaggi');
+INSERT INTO vicidial_list VALUES('7', '2020', '91', '1000000006', 'heramb', 'joshi');
+INSERT INTO vicidial_list VALUES('8', '2021', '91', '1000000007', 'ashwini', 'harle');
+INSERT INTO vicidial_list VALUES('9', '2022', '91', '1000000008', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list VALUES('10', '2020', '91', '1000000009', 'yashh', 'jaggi');
+INSERT INTO vicidial_list VALUES('11', '2021', '91', '1000000010', 'heramb', 'joshi');
+INSERT INTO vicidial_list VALUES('12', '2022', '91', '1000000011', 'ashwini', 'harle');
+INSERT INTO vicidial_list VALUES('13', '2020', '91', '1000000012', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list VALUES('14', '2021', '91', '1000000013', 'yashh', 'jaggi');
+INSERT INTO vicidial_list VALUES('15', '2022', '91', '1000000014', 'heramb', 'joshi');
+INSERT INTO vicidial_list VALUES('16', '2020', '91', '1000000015', 'ashwini', 'harle');
+INSERT INTO vicidial_list VALUES('17', '2020', '91', '1000000016', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list VALUES('18', '2020', '91', '1000000017', 'yashh', 'jaggi');
+INSERT INTO vicidial_list VALUES('19', '2020', '91', '1000000018', 'heramb', 'joshi');
+INSERT INTO vicidial_list VALUES('20', '2021', '91', '1000000019', 'ashwini', 'harle');
+INSERT INTO vicidial_list VALUES('21', '2021', '91', '1000000020', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list VALUES('22', '2022', '91', '1000000021', 'yashh', 'jaggi');

@@ -187,7 +187,7 @@ def log_activity_voice_generator(list_id, username):
 	con.commit()
 	con.close()
 	gc.collect()
-	return
+	return log_number
 
 ##########################################################################################################################################################################################
 
@@ -425,10 +425,11 @@ def voice_generator():
 			# Run TTS Script, Write npy data
 			list_id = session['list_id']
 			username = session['username'].decode("utf-8")
-			log_activity_voice_generator(list_id, username)
+			log_number = log_activity_voice_generator(list_id, username)
 			# Log created successfully
-			VoiceGenerator = GenerateVoice(list_id)
-			VoiceGenerator.start()
+			VoiceGenerator = GenerateVoice(list_id, username, log_number)
+			voice_log_filename = VoiceGenerator.start()
+			session['voice_log_filename'] = voice_log_filename
 			return render_template('voice_generator.html')
 		elif request.form['post_type'] == 'No':
 			# Cancelled Processing
