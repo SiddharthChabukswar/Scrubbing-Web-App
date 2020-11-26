@@ -242,6 +242,7 @@ def home():
 	session['estimated_end_date'] = ''
 	session['del_job_number'] = ''
 	session['statement'] = ''
+	session['voice_log_filename'] = ''
 	return render_template('home.html')
 	
 
@@ -250,6 +251,7 @@ def home():
 def create_job():
 	session['del_job_number'] = ''
 	session['statement'] = ''
+	session['voice_log_filename'] = ''
 	error = ''
 	log = ''
 	if request.method == 'POST':
@@ -303,6 +305,7 @@ def delete_job():
 	session['planned_start_date'] = ''
 	session['estimated_end_date'] = ''
 	session['statement'] = ''
+	session['voice_log_filename'] = ''
 	if request.method == 'POST':
 		if request.form['post_type'] == 'Check':
 			session['del_job_number'] = ''
@@ -342,6 +345,7 @@ def view_jobs(page):
 	session['planned_call_date'] = ''
 	session['planned_start_date'] = ''
 	session['estimated_end_date'] = ''
+	session['voice_log_filename'] = ''
 	if request.method == 'POST':
 		page = 1
 		job_number = request.form['job_number']
@@ -438,13 +442,30 @@ def voice_generator():
 		else:
 			return render_template('voice_generator.html')
 	else:
-		session['list_id'] = ''
 		session['planned_call_date'] = ''
 		session['planned_start_date'] = ''
 		session['estimated_end_date'] = ''
 		session['del_job_number'] = ''
 		session['statement'] = ''
 		return render_template('voice_generator.html')
+
+@app.route('/generate_reports/', methods = ['GET', 'POST'])
+@login_required
+def generate_reports():
+	if request.method == 'POST':
+		if request.form['post_type'] == 'Check':
+			return render_template('generate_reports.html')
+		else:
+			return render_template('generate_reports.html')
+	else:
+		session['list_id'] = ''
+		session['planned_call_date'] = ''
+		session['planned_start_date'] = ''
+		session['estimated_end_date'] = ''
+		session['del_job_number'] = ''
+		session['statement'] = ''
+		session['voice_log_filename'] = ''
+		return render_template('generate_reports.html')
 
 
 if __name__ == "__main__":

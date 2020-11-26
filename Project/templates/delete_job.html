@@ -6,43 +6,43 @@
 
 {% block body %}
 	<div class="container" style="margin-top: 90px;">
-	<div class="row row-content">
-	<div class="col my-2">
-	</div>
-	</div>
-	<div class="row row-content">
-		<div class="col-12 d-flex justify-content-center">
-		<p class="text-secondary display-3">Update Job</p>
+		<div class="row row-content">
+			<div class="col my-2">
+			</div>
+		</div>
+		<div class="row row-content">
+			<div class="col-12 d-flex justify-content-center">
+				<p class="text-secondary display-3">Update Job</p>
+			</div>
+		</div>
+		<div class="row row-content mb-1">
+			<div class="col-12 d-flex justify-content-center">
+				<h4 class="text-secondary">Delete or update job parameters</h4>
+			</div>
 		</div>
 	</div>
-	<div class="row row-content mb-1">
-		<div class="col-12 d-flex justify-content-center">
-		<h4 class="text-secondary">Delete or update job parameters</h4>
-	</div>
-	</div>
-	</div>
-		<div class="row row-content align-items-center">
-            <div class="col-6 offset-sm-3">
-                    <div class="card">
-                        <h6 class="card-header bg-dark text-white d-flex justify-content-center">Search a job here to check if it exists</h6>
-                        <div class="card-body">
-                            <form action="" method="POST">
-                                <div class="form-group row">
-                                    <div class="col-12 col-sm-2">
-                                        <p><b>Job number</b></p>
-                                    </div>
-                                    <div class="col-12 col-sm-7">
-                                        <input class="form-control" type="number" name="job_number" id="job_number" value="{{request.form.job_number}}" required>
-                                    </div>
-									<div class="col-12 col-sm-3">
-                                        <input type="submit" value="Check" name="post_type" class=" form-control btn btn-block btn-primary"/>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-            </div>
+	<div class="row row-content align-items-center">
+		<div class="col-6 offset-sm-3">
+			<div class="card">
+				<h6 class="card-header bg-dark text-white d-flex justify-content-center">Search a job here to check if it exists</h6>
+				<div class="card-body">
+					<form action="" method="POST">
+						<div class="form-group row">
+							<div class="col-12 col-sm-2">
+								<p><b>Job number</b></p>
+							</div>
+							<div class="col-12 col-sm-7">
+								<input class="form-control" type="number" name="job_number" id="job_number" value="{{request.form.job_number}}" required>
+							</div>
+							<div class="col-12 col-sm-3">
+								<input type="submit" value="Check" name="post_type" class=" form-control btn btn-block btn-primary"/>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
+	</div>
 		<div class="row row-content d-flex justify-content-center">
 		</div>
 		{%if checked%}
