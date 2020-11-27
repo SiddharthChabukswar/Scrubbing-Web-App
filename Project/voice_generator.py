@@ -20,12 +20,13 @@ class GenerateVoice:
 		dirpath = self.dirpath
 		try:
 			if os.path.exists(dirpath) == False and os.path.isdir(dirpath) == False:
-				print("Creating Directory "+dirpath+" ...")
+				# print("Creating Directory "+dirpath+" ...")
 				os.mkdir(dirpath)
 				os.chmod(dirpath, 0o777)
-				print("Directory created Successfully.")
+				# print("Directory created Successfully.")
 			else:
-				print("Directory "+dirpath+" already exists!")
+				pass
+				# print("Directory "+dirpath+" already exists!")
 		except Exception as err:
 			print(f"Can't create directory: {dirpath} as {err}")
 			sys.exit(1)
@@ -33,12 +34,13 @@ class GenerateVoice:
 		dirpath = 'out_wav/NPY_Logs'
 		try:
 			if os.path.exists(dirpath) == False and os.path.isdir(dirpath) == False:
-				print("Creating Directory "+dirpath+" ...")
+				# print("Creating Directory "+dirpath+" ...")
 				os.mkdir(dirpath)
 				os.chmod(dirpath, 0o777)
-				print("Directory created Successfully.")
+				# print("Directory created Successfully.")
 			else:
-				print("Directory "+dirpath+" already exists!")
+				pass
+				# print("Directory "+dirpath+" already exists!")
 		except Exception as err:
 			print(f"Can't create directory: {dirpath} as {err}")
 			sys.exit(1)
@@ -57,6 +59,7 @@ class GenerateVoice:
 			cur, con = connection('asterisk')
 			cur.execute("SELECT lead_id, phone_code, phone_number, first_name, last_name FROM vicidial_list WHERE list_id = %s", [list_id])
 			result = cur.fetchall()
+			con.close()
 			limit = 1001
 			countr = 0
 			for row in result:
@@ -80,14 +83,33 @@ class GenerateVoice:
 				countr = countr + 1
 				if countr == limit:
 					break
-			con.close()
 			creation_log = np.array(creation_log)
 			np.save(self.filename, creation_log)
-			print("Created all files Successfully.")
+			# print("Created all files Successfully.")
 		except Exception as err:
 			print(f"Backend Error while making cloud calls: {err}")
-			sys.exit(1)
+			return False
 		gc.collect()
-		return self.filename
+		return True
+
+	def write_to_db(self):
+		try:
+			creation_log = np.load(self.filename, allow_pickle=True)
+			os.remove(self.filename)
+			cur, con = connection('asterisk')
+			for row in creation_log:
+				cur.execute("SELECT count(*) FROM ravenn_auto_dial WHERE lead_id=%s",[row[0]])
+				if str(cur.fetchall()[0][0]) != '0':
+					return False
+			for row in creation_log:
+				cur.execute("INSERT INTO ravenn_auto_dial VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", row)
+				con.commit()
+			con.commit()
+			con.close()
+			gc.collect()
+		except Exception as err:
+			print(f"Backend Error while making writing to db: {err}")
+			return False
+		return True
 	
 	

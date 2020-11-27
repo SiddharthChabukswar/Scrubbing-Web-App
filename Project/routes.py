@@ -1,13 +1,14 @@
 import gc
 import math
 
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, send_file
 from dbconnect import connection
 from MySQLdb import escape_string
 from passlib.hash import sha256_crypt
 from functools import wraps
 from datetime import timedelta, datetime
 from voice_generator import GenerateVoice
+from generate_reports import GenerateReports
 
 
 ##########################################################################################################################################################################################
@@ -15,7 +16,6 @@ from voice_generator import GenerateVoice
 
 app = Flask(__name__)
 app.secret_key = "HelloworlditsPython"
-
 
 ##########################################################################################################################################################################################
 
@@ -84,10 +84,10 @@ def delete_job_helper(job_number):
 	error = 'job deleted successfully'
 	return error
 
-def check_list_present(list_id):
+def check_list_present(list_id, table_name = 'vicidial_lists'):
 	count = 0
 	cur, con = connection('asterisk')
-	cur.execute("SELECT list_id FROM vicidial_lists WHERE list_id = %s", [list_id])
+	cur.execute("SELECT list_id FROM "+table_name+" WHERE list_id = %s", [list_id])
 	data = cur.fetchall()
 	count = len(data)
 	con.close()
@@ -114,14 +114,15 @@ def next_start_date():
 		# print(last_element_date)
 		con.close()
 		gc.collect()
-		if datetime.now() > last_element_date:
-			return datetime.now() + offset
+		current_date_time = datetime.now().replace(microsecond=0)
+		if current_date_time > last_element_date:
+			return current_date_time + offset
 		else:
 			return last_element_date + offset
 	else:
 		con.close()
 		gc.collect()
-		return datetime.now() + offset
+		return current_date_time + offset
 
 def estimate_end_date(planned_start_date, lead_count):
 	scale = 4
@@ -156,7 +157,7 @@ def add_job_helper(job_number):
 	dbfirstname = session['first_name']
 	dblastname = session['last_name']
 	list_id = session['list_id']
-	job_created = datetime.now()
+	job_created = datetime.now().replace(microsecond=0)
 	planned_call_date = datetime.strptime(session['planned_call_date'], '%Y-%m-%d').date()
 	planned_start_date = session['planned_start_date']
 	estimated_end_date = session['estimated_end_date']
@@ -178,7 +179,7 @@ def expected_time_generator(lead_count):
 	return "%.2f" % minutes
 
 def log_activity_voice_generator(list_id, username):
-	log_created = datetime.now()
+	log_created = datetime.now().replace(microsecond=0)
 	cur, con = connection('scrubbing')
 	cur.execute("SELECT count(*) FROM GeneratorLogs")
 	log_number = cur.fetchall()[0][0] + 1
@@ -242,7 +243,6 @@ def home():
 	session['estimated_end_date'] = ''
 	session['del_job_number'] = ''
 	session['statement'] = ''
-	session['voice_log_filename'] = ''
 	return render_template('home.html')
 	
 
@@ -251,7 +251,6 @@ def home():
 def create_job():
 	session['del_job_number'] = ''
 	session['statement'] = ''
-	session['voice_log_filename'] = ''
 	error = ''
 	log = ''
 	if request.method == 'POST':
@@ -305,7 +304,6 @@ def delete_job():
 	session['planned_start_date'] = ''
 	session['estimated_end_date'] = ''
 	session['statement'] = ''
-	session['voice_log_filename'] = ''
 	if request.method == 'POST':
 		if request.form['post_type'] == 'Check':
 			session['del_job_number'] = ''
@@ -345,7 +343,6 @@ def view_jobs(page):
 	session['planned_call_date'] = ''
 	session['planned_start_date'] = ''
 	session['estimated_end_date'] = ''
-	session['voice_log_filename'] = ''
 	if request.method == 'POST':
 		page = 1
 		job_number = request.form['job_number']
@@ -411,7 +408,6 @@ def voice_generator():
 			# Check if list_id present, get leads count, generate estimated time,  ask for confirmation
 			list_id = request.form['list_id']
 			list_count = check_list_present(list_id)
-			list_count = check_list_present(list_id)
 			if list_count == 0:
 				error = "No list with List_id : " + list_id + " found!"
 				return render_template('voice_generator.html', error = error)
@@ -432,9 +428,15 @@ def voice_generator():
 			log_number = log_activity_voice_generator(list_id, username)
 			# Log created successfully
 			VoiceGenerator = GenerateVoice(list_id, username, log_number)
-			voice_log_filename = VoiceGenerator.start()
-			session['voice_log_filename'] = voice_log_filename
-			return render_template('voice_generator.html')
+			status = VoiceGenerator.start()
+			if status == True:
+				status = VoiceGenerator.write_to_db()
+			if status == True:
+				log = 'All voices generated successfully!!'
+				return render_template('voice_generator.html', log = log)
+			else:
+				error = 'Voices generation failed!!'
+				return render_template('voice_generator.html', error = error)
 		elif request.form['post_type'] == 'No':
 			# Cancelled Processing
 			error = 'Voice Generation cancelled!!'
@@ -453,8 +455,17 @@ def voice_generator():
 @login_required
 def generate_reports():
 	if request.method == 'POST':
-		if request.form['post_type'] == 'Check':
-			return render_template('generate_reports.html')
+		if request.form['post_type'] == 'Report':
+			list_id = request.form['list_id']
+			username = session['username'].decode("utf-8")
+			list_count = check_list_present(list_id, 'ravenn_auto_dial')
+			if list_count == 0:
+				error = "No job with List_id : " + list_id + " have been created, possibly the calling is not done yet!"
+				return render_template('generate_reports.html', error = error)
+			generate_report_obj = GenerateReports(list_id, username)
+			dirname = generate_report_obj.generate()
+			# print(dirname)
+			return send_file(dirname+'.zip', as_attachment=True)
 		else:
 			return render_template('generate_reports.html')
 	else:
@@ -464,7 +475,6 @@ def generate_reports():
 		session['estimated_end_date'] = ''
 		session['del_job_number'] = ''
 		session['statement'] = ''
-		session['voice_log_filename'] = ''
 		return render_template('generate_reports.html')
 
 
