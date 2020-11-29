@@ -39,7 +39,7 @@ class GenerateReports:
 
 		cur.execute("SELECT * FROM ravenn_auto_dial WHERE status='Y' and list_id = %s", [list_id])
 		result = cur.fetchall()
-		fp = open(dirpath+'/Positive.csv', 'w')
+		fp = open(dirpath+'/Positive.csv', 'w', newline='', encoding='utf-8')
 		myFile = csv.writer(fp)
 		myFile.writerow(header)
 		myFile.writerows(result)
@@ -47,7 +47,7 @@ class GenerateReports:
 
 		cur.execute("SELECT * FROM ravenn_auto_dial WHERE status='N' and list_id = %s", [list_id])
 		result = cur.fetchall()
-		fp = open(dirpath+'/Negative.csv', 'w')
+		fp = open(dirpath+'/Negative.csv', 'w', newline='', encoding='utf-8')
 		myFile = csv.writer(fp)
 		myFile.writerow(header)
 		myFile.writerows(result)
@@ -55,7 +55,7 @@ class GenerateReports:
 
 		cur.execute("SELECT * FROM ravenn_auto_dial WHERE status='AM' and list_id = %s", [list_id])
 		result = cur.fetchall()
-		fp = open(dirpath+'/AnsweringMachine.csv', 'w')
+		fp = open(dirpath+'/AnsweringMachine.csv', 'w', newline='', encoding='utf-8')
 		myFile = csv.writer(fp)
 		myFile.writerow(header)
 		myFile.writerows(result)
@@ -63,7 +63,7 @@ class GenerateReports:
 
 		cur.execute("SELECT * FROM ravenn_auto_dial WHERE status='U' and list_id = %s", [list_id])
 		result = cur.fetchall()
-		fp = open(dirpath+'/Unidentified.csv', 'w')
+		fp = open(dirpath+'/Unidentified.csv', 'w', newline='', encoding='utf-8')
 		myFile = csv.writer(fp)
 		myFile.writerow(header)
 		myFile.writerows(result)
@@ -71,11 +71,12 @@ class GenerateReports:
 
 		cur.execute("SELECT * FROM ravenn_auto_dial WHERE status='NA' and list_id = %s", [list_id])
 		result = cur.fetchall()
-		fp = open(dirpath+'/NotMarked.csv', 'w')
+		fp = open(dirpath+'/NotMarked.csv', 'w', newline='', encoding='utf-8')
 		myFile = csv.writer(fp)
 		myFile.writerow(header)
 		myFile.writerows(result)
 		fp.close()
+		
 		shutil.make_archive(dirpath, 'zip', dirpath)
 		if os.path.exists(dirpath) and os.path.isdir(dirpath):
 			shutil.rmtree(dirpath)

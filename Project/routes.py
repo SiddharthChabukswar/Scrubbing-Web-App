@@ -9,6 +9,7 @@ from functools import wraps
 from datetime import timedelta, datetime
 from voice_generator import GenerateVoice
 from generate_reports import GenerateReports
+from generate_lists import GenerateLists
 
 
 ##########################################################################################################################################################################################
@@ -451,6 +452,7 @@ def voice_generator():
 		session['statement'] = ''
 		return render_template('voice_generator.html')
 
+
 @app.route('/generate_reports/', methods = ['GET', 'POST'])
 @login_required
 def generate_reports():
@@ -464,6 +466,18 @@ def generate_reports():
 				return render_template('generate_reports.html', error = error)
 			generate_report_obj = GenerateReports(list_id, username)
 			dirname = generate_report_obj.generate()
+			# print(dirname)
+			return send_file(dirname+'.zip', as_attachment=True)
+		elif request.form['post_type'] == 'Generate':
+			list_id = request.form['list_id']
+			username = session['username'].decode("utf-8")
+			list_count = check_list_present(list_id, 'ravenn_auto_dial')
+			if list_count == 0:
+				error = "No job with List_id : " + list_id + " have been created, possibly the calling is not done yet!"
+				return render_template('generate_reports.html', error2 = error)
+			status = request.form.getlist('response_type')
+			generate_list_obj = GenerateLists(list_id, username)
+			dirname = generate_list_obj.generate_list(status)
 			# print(dirname)
 			return send_file(dirname+'.zip', as_attachment=True)
 		else:
