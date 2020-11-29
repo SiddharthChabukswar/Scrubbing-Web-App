@@ -3,95 +3,8 @@
 	<head>
 		<title>{% block title %}{% endblock %}</title>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-		<style type="text/css">
-			body 
-			{ 
-				margin: 0;
-				font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Fira Sans",Ubuntu,Oxygen,"Oxygen Sans",Cantarell,"Droid Sans","Apple Color Emoji","Segoe UI Emoji","Segoe UI Emoji","Segoe UI Symbol","Lucida Grande",Helvetica,Arial,sans-serif; 
-			}
-	
-			.primary
-			{
-				background-color: #ff7820;
-				border: none;
-			}
-			.primary:hover
-			{
-				background-color: #e61c0d;
-				border: none;
-			}
-			.navbar
-			{
-				top: 0%;
-				background-color: #f6f8fa;
-				padding: 15px 10px;
-				width: 100%;
-				position: fixed;
-				z-index: 10;
-			}
-	
-			.navbar a, .navbar button
-			{
-				color: black;
-				margin-left: 5px;
-				text-decoration: none;
-				float: left;
-				text-align: center;
-				padding: 15px;
-				border-radius: 5px;
-				font-size: 1.2em;
-			}
-	
-			.navbar-right a:hover,
-			.dropdown button:hover
-			{
-				color:black;
-				background-color: #ff7820;
-			}
-	
-			.navbar-brand
-			{
-				margin-top: -20px;
-				font-weight: bold;
-				font-size: 1.6em;
-				width: 50px;
-				height: 50px;
-			}
-	
-			.navbar-brand img
-			{
-				width: 50px;
-				height: 40px;
-			}
-
-			.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus 
-			{
-				background-color: transparent;
-				color: #999999;
-			}
-	
-			.navbar-right
-			{
-				float: right;
-				margin-right: 40px;
-			}
-	
-			.navbar-right .active 
-			{
-				background-color: #e61c0d;
-				color: black;
-			}
-			.fields
-			{
-				float: left;
-			}
-
-			.center 
-			{
-				font-size: 30px;
-				text-align: center;
-			}
-		</style>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/header.css')}}">
 	</head>
 	<body>
 
@@ -111,7 +24,14 @@
 					{% for href, id, caption in navigation_bar %}
 					<a {% if id == active_page %} class="active" {% endif %} href="{{ href }}">{{ caption }}</a>
 					{% endfor %}
-					<button type="button"  class="primary" onclick="location.href = '/logout/';">Log out</button>
+				</div>
+				<div class="dropdown">
+					<button class="dropdownBtn"> <img src="{{ url_for('static', filename = 'butler.png')}}" style="height: 20px;width: 20px;"></button>
+					<div class="content">
+						<p style="font-size: 1.2em; padding-bottom: 20px;">Hi, {{session['username'].decode('utf-8').capitalize()}}</p>
+						<hr style="margin-bottom: 0px; margin-top: 0px;">
+						<p onclick="location.href = '/logout/';" ><span class="fa fa-sign-out"></span> Logout</p> 
+					</div>
 				</div>
 			</div>
 		</div>

@@ -39,7 +39,7 @@
                                         <p><b>List ID</b></p>
                                     </div>
                                     <div class="col-12 col-sm-4">
-                                        <input class="form-control" type="text" name="list_id" value="{{request.form.list_id}}">
+                                        <input class="form-control" type="number" name="list_id" value="{{request.form.list_id}}">
                                     </div>
 								</div>
 								<div class="form-group row">
@@ -89,8 +89,9 @@
                                         <input type="submit" value="Search" name="search" class=" form-control btn btn-block btn-primary"/>
                                    </div>
 								<div class="col-12 col-sm-3">
-                                        <input type="reset" value="Reset" name="reset" class=" form-control btn btn-block btn-info" onclick="resetAll()"/>
-                                    </div>
+                                        <!-- <input type="reset" value="Reset" name="reset" class=" form-control btn btn-block btn-info" onclick="resetAll()"/> -->
+										<input  value="Reset" id = "reset" name="reset" class=" form-control btn btn-block btn-info"/>
+									</div>
                                 </div>
 								
                             </form>
@@ -144,6 +145,22 @@
 		$(function () {
 		$('[data-toggle="tooltip"]').tooltip()
 		})
+		</script>
+		<script>
+			$(function () {
+				$('[data-toggle="tooltip"]').tooltip()
+			})
+	
+			$("#reset").click(function()
+			{
+				$("#inputfields1").val("");
+				$("#inputfields2").val("");
+				$("#inputfields3").val("");
+				$("#inputfields4").val("");
+				$("#inputfields5").val("");
+				$("#inputfields6").val("");
+			});
+	
 		</script>
 		<script>
 		function copytext(x)

@@ -1,0 +1,118 @@
+body 
+{ 
+	margin: 0px;
+	font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Fira Sans",Ubuntu,Oxygen,"Oxygen Sans",Cantarell,"Droid Sans","Apple Color Emoji","Segoe UI Emoji","Segoe UI Emoji","Segoe UI Symbol","Lucida Grande",Helvetica,Arial,sans-serif; 
+}
+
+.navbar
+{
+	top: 0%;
+	background-color: #f6f8fa;
+	padding: 15px 10px;
+	width: 100%;
+	position: fixed;
+	z-index: 10;
+}
+
+.fields a
+{
+	color: black;
+	margin-left: 5px;
+	text-decoration: none;
+	float: left;
+	text-align: center;
+	padding: 15px;
+	border-radius: 5px;
+	font-size: 1.2em;
+}
+
+.fields a:hover
+{
+	color:black;
+	background-color: #ff7820;
+}
+
+.navbar-brand
+{
+	margin-top: -20px;
+	font-weight: bold;
+	font-size: 1.6em;
+	width: 50px;
+	height: 50px;
+}
+
+.navbar-brand img
+{
+	width: 50px;
+	height: 40px;
+}
+
+.navbar-right
+{
+	float: right;
+	margin-right: 40px;
+}
+
+.navbar-right .active 
+{
+	background-color: #e61c0d;
+	color: black;
+}
+
+.fields
+{
+	float: left;
+}
+
+.dropdown
+{
+	float: right;
+}
+
+.dropdown .dropdownBtn
+{
+	font-size: 1.2em;  
+	border: none;
+	border-radius: 5px;
+	color: black;
+	padding: 15px;
+	background-color: inherit;
+	font-family: inherit;
+}
+
+
+.content 
+{
+	right:1px;
+	cursor: pointer;
+	display: none;
+	border-radius: 10px;
+	position: absolute;
+	background-color: #f9f9f9;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1000;
+	min-width: 180px;
+	font-weight: 100px;
+}
+
+.content p
+{
+	color: black;
+	padding: 10px;
+	text-decoration: none;
+	display: block;
+	text-align: center;
+	top: 0;
+	margin-bottom: 0px;
+}
+
+.content p:hover 
+{
+	padding: 10px;
+	background-color: #ddd;
+}
+
+.dropdown:hover .content 
+{
+	display: block;
+}

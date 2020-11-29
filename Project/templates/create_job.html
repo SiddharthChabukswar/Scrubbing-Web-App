@@ -51,7 +51,7 @@
 										<input type="submit" value="Check" name="post_type" class=" form-control btn btn-block btn-primary"/>
 									</div>
 									<div class="col-12 col-sm-3">
-										<input type="reset" value="Reset" name="reset" class=" form-control btn btn-block btn-info"/>
+										<input id="reset" value="Reset" name="reset" class=" form-control btn btn-block btn-info"/>
 									</div>
 								</div>
 							</form>
@@ -129,7 +129,18 @@
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-	</body>
+	<script type="text/javascript">
+		$("#reset").click(function()
+		{
+			$("#inputfields1").val("");
+			$("#inputfields2").val("");
+			$("#inputfields3").val("");
+			$("#inputfields4").val("");
+			$("#inputfields5").val("");
+			$("#inputfields6").val("");
+		});
+	</script>	
+</body>
 </html>
 
 {% endblock %}
