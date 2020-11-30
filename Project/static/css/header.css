@@ -55,8 +55,8 @@ body
 
 .navbar-right .active 
 {
+	color: #f6f8fa;
 	background-color: #e61c0d;
-	color: black;
 }
 
 .fields
