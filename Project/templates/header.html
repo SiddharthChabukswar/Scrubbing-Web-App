@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{% block title %}{% endblock %}</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/header.css')}}">
+	</head>
+	<body>
+
+		{% set navigation_bar = [
+			('/home/', 'home', 'Home'),
+			('/voice_generator/', 'voice_generator', 'Voice Generator'),
+			('/view_jobs/', 'view_jobs', 'View Jobs'),
+			('/create_job/', 'create_job', 'Create Job'),
+			('/delete_job/', 'delete_job', 'Update Job'),
+			('/generate_reports/', 'generate_reports', 'Reports')
+		] %}
+		
+		<div class="navbar" id="nav">
+			<a href="https://www.ravenn.tech" class="navbar-brand" target="_blank"><img src="{{ url_for('static', filename = 'birdy.png')}}"></a>
+			<div class="navbar-right">
+				<div class="fields">
+					{% for href, id, caption in navigation_bar %}
+					<a {% if id == active_page %} class="active" {% endif %} href="{{ href }}">{{ caption }}</a>
+					{% endfor %}
+				</div>
+				<div class="dropdown">
+					<button class="dropdownBtn"> <img src="{{ url_for('static', filename = 'butler.png')}}" style="height: 20px;width: 20px;"></button>
+					<div class="content">
+						<!-- <p style="font-size: 1.2em; padding-bottom: 20px;">Hi, {{session['username'].decode('utf-8').capitalize()}}</p>-->
+						<p style="font-size: 1.2em; padding-bottom: 20px;">Hi, {{ session['username'].capitalize() }}</p>
+						<hr style="margin-bottom: 0px; margin-top: 0px;">
+						<p onclick="location.href = '/logout/';" ><span class="fa fa-sign-out"></span> Logout</p> 
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% block body %}{% endblock %}

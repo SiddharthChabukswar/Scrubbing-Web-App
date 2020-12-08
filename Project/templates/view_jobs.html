@@ -1,0 +1,187 @@
+{% extends "header.html" %}
+
+{% set active_page = "view_jobs" %}
+
+{% block title %}View Jobs{% endblock %}
+
+{% block body %}
+	<div class="container" style="margin-top: 90px;">
+		<div class="row row-content d-flex flex-row-reverse">
+			<div class="d-sm-flex align-items-center justify-content-between mb-4" style="padding: 10px;">
+         		<a href="/generate_reports/" class="d-none d-sm-inline-block btn-sm shadow-sm" style="background-color: #ff7820; color: white; text-decoration: none; padding: 10px;"><i class="fa fa-download fa-sm text-white-50"></i> Generate Report</a>
+      		</div>
+		</div>
+		
+	<div class="row row-content">
+		<div class="col-12 d-flex justify-content-center">
+		<p class="text-secondary display-3">View All Jobs</p>
+		</div>
+	</div>
+	</div>
+
+	<div class="row row-content mb-1">
+		<div class="col-12 d-flex justify-content-center">
+		<h4 class="text-secondary">View new and old jobs</h4>
+	  </div>
+	  </div>
+	        <div class="row row-content align-items-center">
+            <div class="col-8 offset-sm-2">
+                    <div class="card">
+                        <h6 class="card-header bg-dark text-white d-flex justify-content-center">Apply filters to your job</h6>
+                        <div class="card-body">
+                            <form action="" method="POST">
+                                <div class="form-group row">
+                                    <div class="col-12 col-sm-2">
+                                        <p><b>Job number</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="number" name="job_number" value="{{request.form.job_number}}">
+                                    </div>
+									<div class="col-12 col-sm-2">
+                                        <p><b>List ID</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="number" name="list_id" value="{{request.form.list_id}}">
+                                    </div>
+								</div>
+								<div class="form-group row">
+                                    <div class="col-12 col-sm-2">
+                                        <p><b>First Name</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="text" name="first_name" value="{{request.form.first_name}}">
+                                    </div>
+									<div class="col-12 col-sm-2">
+                                        <p><b>Last Name</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="text" name="last_name" value="{{request.form.last_name}}">
+                                    </div>
+								</div>
+								<div class="form-group row">
+                                    <div class="col-12 col-sm-2">
+                                        <p><b>Username</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="text" name="username" value="{{request.form.username}}">
+                                    </div>
+									<div class="col-12 col-sm-2">
+                                        <p><b>Planned call-date</b></p>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <input class="form-control" type="date" name="planned_call_date" value="{{request.form.planned_call_date}}">
+                                    </div>
+								</div>
+								<div class="form-group row">
+									<div class="btn-group btn-group-toggle col-sm-6" data-toggle="buttons">
+										<label class="btn btn-secondary active">
+											<input type="radio" name="status" id="All" autocomplete="off" value="All" checked> All
+										</label>
+										<label class="btn btn-secondary">
+											<input type="radio" name="status" id="Y" autocomplete="off" value="Y"> Completed
+										</label>
+										<label class="btn btn-secondary">
+											<input type="radio" name="status" id="N" autocomplete="off" value="N"> Upcoming
+										</label>
+										<label class="btn btn-secondary">
+											<input type="radio" name="status" id="F" autocomplete="off" value="F"> Failed
+										</label>
+									</div>
+									<div class="col-12 col-sm-3">
+                                        <input type="submit" value="Search" name="search" class=" form-control btn btn-block btn-primary"/>
+                                   </div>
+								<div class="col-12 col-sm-3">
+                                        <!-- <input type="reset" value="Reset" name="reset" class=" form-control btn btn-block btn-info" onclick="resetAll()"/> -->
+										<input  value="Reset" id = "reset" name="reset" class=" form-control btn btn-block btn-info"/>
+									</div>
+                                </div>
+								
+                            </form>
+                        </div>
+                    </div>
+			  <h5 class="d-flex justify-content-center mt-2 text-danger">{{error}}</h5>
+            </div>
+        </div>
+		<div id="tabularSection1" class="container-fluid mt-3">
+		<table class="table table-hover">
+			<tr class="bg-warning">
+			  <th>Job Number</th>
+			  <th>List Id.</th>
+			  <th>Username</th>
+			  <th>First name</th>
+			  <th>Last name</th>
+			  <th>Job Created</th>
+			  <th>Planned Calling Date</th>
+			  <th>Job Start</th>
+			  <th>Job End</th>
+			  <th>Job Status</th>
+			</tr>
+			{%for row in data%}
+			<tr>
+				{%for element in row%}
+					{%if element == row[0]%}
+						<td data-toggle="tooltip" title="Copy Job-ID" onclick="copytext(this)" name="job_num">{{element}}</td>
+					{%else%}
+						<td>{{element}}</td>
+					{%endif%}
+				{%endfor%}
+			</tr>
+			{%endfor%}
+		</table>
+		</div>
+
+		<div class="center">
+			{% for i in range(1, possible_pages+1) %}
+				{%if current_page == i%}
+					<a href="{{ url_for('view_jobs', page=i)}}" style="color:red;"><b>{{i}}</b></a>
+				{%else%}
+					<a href="{{ url_for('view_jobs', page=i)}}" style="color:blue;">{{i}}</a>
+				{%endif%}
+			{%endfor%}
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.5.4/umd/popper.min.js" integrity="sha512-7yA/d79yIhHPvcrSiB8S/7TyX0OxlccU8F/kuB8mHYjLlF1MInPbEohpoqfz0AILoq5hoD7lELZAYYHbyeEjag==" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+		<script>
+		$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+		})
+		</script>
+		<script>
+			$(function () {
+				$('[data-toggle="tooltip"]').tooltip()
+			})
+	
+			$("#reset").click(function()
+			{
+				$("#inputfields1").val("");
+				$("#inputfields2").val("");
+				$("#inputfields3").val("");
+				$("#inputfields4").val("");
+				$("#inputfields5").val("");
+				$("#inputfields6").val("");
+			});
+	
+		</script>
+		<script>
+		function copytext(x)
+		{
+		const copyText = x.innerText;
+		const el = document.createElement("input");
+		document.body.appendChild(el);
+		el.value = copyText;
+		console.log(el.value);
+		el.select();
+		document.execCommand("copy");
+		document.body.removeChild(el);
+		}
+		</script>
+		<script>
+
+
+		</script>
+	</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,463 @@
+CREATE USER 'scrubbing_dev'@'localhost' IDENTIFIED BY '123456789';
+GRANT ALL PRIVILEGES ON * . * TO 'scrubbing_dev'@'localhost';
+FLUSH PRIVILEGES;
+
+CREATE DATABASE scrubbing;
+CREATE DATABASE asterisk;
+
+USE scrubbing;
+
+DROP TABLE Users;
+DROP TABLE Schedules;
+DROP TABLE GeneratorLogs;
+
+CREATE TABLE Users(
+	username VARCHAR(30) PRIMARY KEY NOT NULL,
+	first_name VARCHAR(30) NOT NULL, 
+	last_name VARCHAR(30) NOT NULL,
+	password VARCHAR(100) NOT NULL
+	);
+
+INSERT INTO Users VALUES('siddharth', 'siddharth', 'chabukswar', '$5$rounds=535000$JEESfoCK4IsdZhJS$sqENsab9ewyGoduzy3R7YdbGalcDmd.ZoHy8CdQbjqD');
+INSERT INTO Users VALUES('heramb', 'heramb', 'joshi', '$5$rounds=535000$02txwonR47WII2s2$cem3etXVZ.WfvY231mxmRhjRwQW3HUhGPBODs.IdVJ1');
+INSERT INTO Users VALUES('ashwini', 'ashwini', 'harle', '$5$rounds=535000$vvxj/5SJ6eggg2FZ$NUyQ5O4PbxoORiWRx3pWRIKQsaxXxnuEjrxId.zBkV2');
+INSERT INTO Users VALUES('yashh', 'yashh', 'jaggi', '$5$rounds=535000$fQo1wDpfh1psmCW3$b6LVydk7Pg57uPiFa6NS1RKoKu5VQCPgaPFRrC0aSTD');
+
+CREATE TABLE Schedules(
+	job_number INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	list_id BIGINT(14) UNSIGNED NOT NULL,
+	username VARCHAR(30) NOT NULL,
+	first_name VARCHAR(30) NOT NULL, 
+	last_name VARCHAR(30) NOT NULL,
+	job_created TIMESTAMP NOT NULL,
+	planned_call_date DATE NOT NULL,
+	job_start_time TIMESTAMP NOT NULL,
+	job_expected_end_time TIMESTAMP NOT NULL,
+	status ENUM('Y', 'N', 'F') NOT NULL
+	);
+
+CREATE TABLE GeneratorLogs(
+	log_number INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	list_id BIGINT(14) UNSIGNED NOT NULL,
+	username VARCHAR(30) NOT NULL,
+	log_created TIMESTAMP NOT NULL,
+	updated_db ENUM('Y', 'N') NOT NULL
+	);
+
+INSERT INTO Schedules VALUES('1', '1', 'siddharth', 'siddharth', 'chabukswar', '2020-11-10 12:00:00', '2020-11-15', '2020-11-10 12:30:00', '2020-11-10 22:30:00', 'Y');
+INSERT INTO Schedules VALUES('2', '2', 'heramb', 'heramb', 'joshi', '2020-11-11 12:00:00', '2020-11-16', '2020-11-11 12:30:00', '2020-11-11 22:30:00', 'F');
+INSERT INTO Schedules VALUES('3', '3', 'ashwini', 'ashwini', 'harle', '2020-11-12 12:00:00', '2020-11-17', '2020-11-12 12:30:00', '2020-11-12 23:30:00', 'Y');
+INSERT INTO Schedules VALUES('4', '4', 'yashh', 'yashh', 'jaggi', '2020-11-13 12:00:00', '2020-11-18', '2020-11-13 12:30:00', '2020-11-13 22:30:00', 'Y');
+INSERT INTO Schedules VALUES('5', '1', 'siddharth', 'siddharth', 'chabukswar', '2020-11-14 12:00:00', '2020-11-19', '2020-11-14 12:30:00', '2020-11-14 22:30:00', 'Y');
+INSERT INTO Schedules VALUES('6', '2', 'heramb', 'heramb', 'joshi', '2020-11-15 12:00:00', '2020-11-20', '2020-11-15 12:30:00', '2020-11-15 22:30:00', 'Y');
+INSERT INTO Schedules VALUES('7', '3', 'ashwini', 'ashwini', 'harle', '2020-11-16 12:00:00', '2020-11-21', '2020-11-16 12:30:00', '2020-11-16 22:30:00', 'F');
+INSERT INTO Schedules VALUES('8', '4', 'yashh', 'yashh', 'jaggi', '2020-11-17 12:00:00', '2020-11-22', '2020-11-17 12:30:00', '2020-11-17 22:30:00', 'Y');
+INSERT INTO Schedules VALUES('9', '1', 'siddharth', 'siddharth', 'chabukswar', '2020-11-18 12:00:00', '2020-11-23', '2020-11-18 12:30:00', '2020-11-18 22:30:00', 'Y');
+INSERT INTO Schedules VALUES('10', '2', 'heramb', 'heramb', 'joshi', '2020-11-19 08:00:00', '2020-11-24', '2020-11-19 08:30:00', '2020-11-19 18:30:00', 'Y');
+INSERT INTO Schedules VALUES('11', '3', 'ashwini', 'ashwini', 'harle', '2020-11-19 10:00:00', '2020-11-24', '2020-11-19 19:00:00', '2020-11-20 05:00:00', 'F');
+INSERT INTO Schedules VALUES('12', '4', 'yashh', 'yashh', 'jaggi', '2020-11-19 12:00:00', '2020-11-25', '2020-11-20 05:30:00', '2020-11-20 15:30:00', 'Y');
+INSERT INTO Schedules VALUES('13', '1', 'siddharth', 'siddharth', 'chabukswar', '2020-11-20 06:00:00', '2020-11-26', '2020-11-20 16:00:00', '2020-11-21 02:00:00', 'N');
+INSERT INTO Schedules VALUES('14', '2', 'heramb', 'heramb', 'joshi', '2020-11-20 07:00:00', '2020-11-26', '2020-11-21 02:30:00', '2020-11-21 12:30:00', 'N');
+INSERT INTO Schedules VALUES('15', '3', 'ashwini', 'ashwini', 'harle', '2020-11-20 08:00:00', '2020-11-27', '2020-11-21 13:00:00', '2020-11-21 23:00:00', 'N');
+INSERT INTO Schedules VALUES('16', '4', 'yashh', 'yashh', 'jaggi', '2020-11-20 12:00:00', '2020-12-01', '2020-11-21 23:30:00', '2020-11-22 09:30:00', 'N');
+INSERT INTO Schedules VALUES('17', '2', 'ashwini', 'ashwini', 'harle', '2020-11-20 13:00:00', '2020-11-29', '2020-11-22 10:00:00', '2020-11-22 20:00:00', 'N');
+INSERT INTO Schedules VALUES('18', '1', 'yashh', 'yashh', 'jaggi', '2020-11-20 13:30:00', '2020-12-30', '2020-11-22 20:30:00', '2020-11-23 06:30:00', 'N');
+
+
+
+
+
+
+USE asterisk;
+
+DROP TABLE vicidial_lists;
+DROP TABLE vicidial_list;
+DROP TABLE ravenn_auto_dial;
+
+CREATE TABLE vicidial_lists (
+	list_id bigint(14) unsigned NOT NULL,
+	list_name varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+	campaign_id varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
+	active enum('Y','N') COLLATE utf8_unicode_ci DEFAULT NULL,
+	list_description varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+	list_changedate datetime DEFAULT NULL,
+	list_lastcalldate datetime DEFAULT NULL,
+	reset_time varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
+	agent_script_override varchar(20) COLLATE utf8_unicode_ci DEFAULT '',
+	campaign_cid_override varchar(20) COLLATE utf8_unicode_ci DEFAULT '',
+	am_message_exten_override varchar(100) COLLATE utf8_unicode_ci DEFAULT '',
+	drop_inbound_group_override varchar(20) COLLATE utf8_unicode_ci DEFAULT '',
+	xferconf_a_number varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
+	xferconf_b_number varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
+	xferconf_c_number varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
+	xferconf_d_number varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
+	xferconf_e_number varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
+	web_form_address text COLLATE utf8_unicode_ci DEFAULT NULL,
+	web_form_address_two text COLLATE utf8_unicode_ci DEFAULT NULL,
+	time_zone_setting enum('COUNTRY_AND_AREA_CODE','POSTAL_CODE','NANPA_PREFIX','OWNER_TIME_ZONE_CODE') COLLATE utf8_unicode_ci DEFAULT 'COUNTRY_AND_AREA_CODE',
+	inventory_report enum('Y','N') COLLATE utf8_unicode_ci DEFAULT 'Y',
+	expiration_date date DEFAULT '2099-12-31',
+	na_call_url text COLLATE utf8_unicode_ci DEFAULT NULL,
+	local_call_time varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'campaign',
+	web_form_address_three text COLLATE utf8_unicode_ci DEFAULT NULL,
+	status_group_id varchar(20) COLLATE utf8_unicode_ci DEFAULT '',
+	user_new_lead_limit smallint(5) DEFAULT -1,
+	inbound_list_script_override varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+	default_xfer_group varchar(20) COLLATE utf8_unicode_ci DEFAULT '---NONE---',
+	daily_reset_limit smallint(5) DEFAULT -1,
+	resets_today smallint(5) unsigned DEFAULT 0,
+	auto_active_list_rank smallint(5) DEFAULT 0,
+	cache_count int(9) unsigned DEFAULT 0,
+	cache_count_new int(9) unsigned DEFAULT 0,
+	cache_count_dialable_new int(9) unsigned DEFAULT 0,
+	cache_date datetime DEFAULT NULL,
+	inbound_drop_voicemail varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+	inbound_after_hours_voicemail varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+	PRIMARY KEY (list_id)
+	) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE vicidial_list (
+	lead_id int(9) unsigned NOT NULL AUTO_INCREMENT,
+	entry_date datetime DEFAULT NULL,
+	modify_date timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+	status varchar(6) COLLATE utf8_unicode_ci DEFAULT NULL,
+	user varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+	vendor_lead_code varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+	source_id varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+	list_id bigint(14) unsigned NOT NULL DEFAULT 0,
+	gmt_offset_now decimal(4,2) DEFAULT 0.00,
+	called_since_last_reset enum('Y','N','Y1','Y2','Y3','Y4','Y5','Y6','Y7','Y8','Y9','Y10') COLLATE utf8_unicode_ci DEFAULT 'N',
+	phone_code varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+	phone_number varchar(18) COLLATE utf8_unicode_ci NOT NULL,
+	title varchar(4) COLLATE utf8_unicode_ci DEFAULT NULL,
+	first_name varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+	middle_initial varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+	last_name varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+	address1 varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+	address2 varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+	address3 varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+	city varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+	state varchar(2) COLLATE utf8_unicode_ci DEFAULT NULL,
+	province varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+	postal_code varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+	country_code varchar(3) COLLATE utf8_unicode_ci DEFAULT NULL,
+	gender enum('M','F','U') COLLATE utf8_unicode_ci DEFAULT 'U',
+	date_of_birth date DEFAULT NULL,
+	alt_phone varchar(12) COLLATE utf8_unicode_ci DEFAULT NULL,
+	email varchar(70) COLLATE utf8_unicode_ci DEFAULT NULL,
+	security_phrase varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+	comments varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+	called_count smallint(5) unsigned DEFAULT 0,
+	last_local_call_time datetime DEFAULT NULL,
+	rank smallint(5) NOT NULL DEFAULT 0,
+	owner varchar(20) COLLATE utf8_unicode_ci DEFAULT '',
+	entry_list_id bigint(14) unsigned NOT NULL DEFAULT 0,
+	PRIMARY KEY (lead_id),
+	KEY phone_number (phone_number),
+	KEY list_id (list_id),
+	KEY called_since_last_reset (called_since_last_reset),
+	KEY status (status),
+	KEY gmt_offset_now (gmt_offset_now),
+	KEY postal_code (postal_code),
+	KEY last_local_call_time (last_local_call_time),
+	KEY rank (rank),
+	KEY owner (owner),
+	KEY phone_list (phone_number,list_id),
+	KEY list_phone (list_id,phone_number),
+	KEY list_status (list_id,status)
+	) ENGINE=MyISAM AUTO_INCREMENT=25353 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE ravenn_auto_dial(
+	lead_id INT(9) UNSIGNED PRIMARY KEY NOT NULL, 
+	called_time TIMESTAMP NOT NULL, 
+	first_name VARCHAR(30), 
+	last_name VARCHAR(30), 
+	phone_code VARCHAR(10) NOT NULL, 
+	phone_number VARCHAR(18) NOT NULL, 
+	list_id BIGINT(14) UNSIGNED NOT NULL, 
+	sentence1 VARCHAR(50), 
+	sentence2 VARCHAR(50), 
+	status ENUM('Y', 'N', 'AM', 'U', 'NA') NOT NULL, 
+	recorded1 BOOLEAN NOT NULL, 
+	recorded2 BOOLEAN NOT NULL
+	);
+
+INSERT INTO vicidial_lists (list_id, list_name) VALUES('2020', 'List 1');
+INSERT INTO vicidial_lists (list_id, list_name) VALUES('2021', 'List 2');
+INSERT INTO vicidial_lists (list_id, list_name) VALUES('2022', 'List 3');
+
+INSERT INTO vicidial_lists VALUES (1006,'Ind Rec.','Recruit','N','Ind Rec.','2020-09-05 13:53:09','2020-09-05 08:24:44','','','','','','','','','','','','','COUNTRY_AND_AREA_CODE','Y','2099-12-31','','campaign','','',-1,'','---NONE---',-1,0,0,0,0,0,NULL,'','');
+INSERT INTO vicidial_lists VALUES (1007,'Leads US USPS','PS','N','Leads US USPS','2020-09-17 09:28:07','2020-09-07 11:15:14','','','','','','','','','','','','','COUNTRY_AND_AREA_CODE','Y','2099-12-31','','campaign','','',-1,'','---NONE---',-1,0,0,0,0,0,NULL,'','');
+INSERT INTO vicidial_lists VALUES (1008,'testing us','PS','N','1008 testing us','2020-09-18 09:30:56','2020-09-25 10:25:52','','','','','','','','','','',NULL,NULL,'COUNTRY_AND_AREA_CODE','Y','2099-12-31',NULL,'campaign',NULL,'',-1,NULL,'---NONE---',-1,0,0,0,0,0,NULL,NULL,NULL);
+INSERT INTO vicidial_lists VALUES (1009,'connects for testing','PS','N','connects for testing','2020-09-30 14:15:05','2020-09-30 14:28:06','','','','','','','','','','','','','COUNTRY_AND_AREA_CODE','Y','2099-12-31','','campaign','','',-1,'','---NONE---',-1,0,0,0,0,0,NULL,'','');
+INSERT INTO vicidial_lists VALUES (1011,'connected from 21st to 1st oct','PS','N','connected from 21st to 1st oct','2020-10-03 10:02:20','2020-10-05 13:33:26','','','','','','','','','','',NULL,NULL,'COUNTRY_AND_AREA_CODE','Y','2099-12-31',NULL,'campaign',NULL,'',-1,NULL,'---NONE---',-1,0,0,0,0,0,NULL,NULL,NULL);
+INSERT INTO vicidial_lists VALUES (1012,'connected from rest','PS','N','connected from rest','2020-10-03 10:22:44',NULL,'','','','','','','','','','',NULL,NULL,'COUNTRY_AND_AREA_CODE','Y','2099-12-31',NULL,'campaign',NULL,'',-1,NULL,'---NONE---',-1,0,0,0,0,0,NULL,NULL,NULL);
+INSERT INTO vicidial_lists VALUES (1010,'demoTestLead','Recruit','N','DemoTestLead','2020-10-19 13:00:11',NULL,'','','','','','','','','','','','','COUNTRY_AND_AREA_CODE','Y','2099-12-31','','campaign','','',-1,'','---NONE---',-1,0,0,0,0,0,NULL,'','');
+INSERT INTO vicidial_lists VALUES (1015,'RemainderListOfRegional','PS','N','RemainderListOfRegional','2020-10-20 13:46:15','2020-10-20 09:39:07','','','','','','','','','','','','','COUNTRY_AND_AREA_CODE','Y','2099-12-31','','campaign','','',-1,'','---NONE---',-1,0,0,0,0,0,NULL,'','');
+INSERT INTO vicidial_lists VALUES (1016,'10K Raw 26th Oct PS','PS','N','10K Raw 26th Oct PS','2020-10-26 16:45:26','2020-10-27 01:13:07','','','','','','','','','','','','','COUNTRY_AND_AREA_CODE','Y','2099-12-31','','campaign','','',-1,'','---NONE---',-1,0,0,0,0,0,NULL,'','');
+INSERT INTO vicidial_lists VALUES (1017,'churning of 1016','PS','N','churning of 1016','2020-10-27 09:59:07','2020-10-27 18:01:09','','','','','','','','','','',NULL,NULL,'COUNTRY_AND_AREA_CODE','Y','2099-12-31',NULL,'campaign',NULL,'',-1,NULL,'---NONE---',-1,0,0,0,0,0,NULL,NULL,NULL);
+INSERT INTO vicidial_lists VALUES (1018,'1018-31st oct 117','PS','Y','1018-31st oct 117','2020-11-07 14:40:18','2020-11-07 09:46:25','','','','','','','','','','','','','COUNTRY_AND_AREA_CODE','Y','2099-12-31','','campaign','','',-1,'','---NONE---',-1,0,0,0,0,0,NULL,'','');
+INSERT INTO vicidial_lists VALUES (1020,'ListOfOneLead','Recruit','Y','List Of One Lead','2020-11-07 12:34:44',NULL,'','','','','','','','','','',NULL,NULL,'COUNTRY_AND_AREA_CODE','Y','2099-12-31',NULL,'campaign',NULL,'',-1,NULL,'---NONE---',-1,0,0,0,0,0,NULL,NULL,NULL);
+
+
+
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('1', '2020', '91', '1000000000', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('2', '2021', '91', '1000000001', 'yashh', 'jaggi');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('3', '2022', '91', '1000000002', 'heramb', 'joshi');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('4', '2020', '91', '1000000003', 'ashwini', 'harle');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('5', '2021', '91', '1000000004', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('6', '2022', '91', '1000000005', 'yashh', 'jaggi');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('7', '2020', '91', '1000000006', 'heramb', 'joshi');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('8', '2021', '91', '1000000007', 'ashwini', 'harle');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('9', '2022', '91', '1000000008', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('10', '2020', '91', '1000000009', 'yashh', 'jaggi');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('11', '2021', '91', '1000000010', 'heramb', 'joshi');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('12', '2022', '91', '1000000011', 'ashwini', 'harle');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('13', '2020', '91', '1000000012', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('14', '2021', '91', '1000000013', 'yashh', 'jaggi');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('15', '2022', '91', '1000000014', 'heramb', 'joshi');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('16', '2020', '91', '1000000015', 'ashwini', 'harle');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('17', '2020', '91', '1000000016', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('18', '2020', '91', '1000000017', 'yashh', 'jaggi');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('19', '2020', '91', '1000000018', 'heramb', 'joshi');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('20', '2021', '91', '1000000019', 'ashwini', 'harle');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('21', '2021', '91', '1000000020', 'siddharth', 'chabukswar');
+INSERT INTO vicidial_list (lead_id, list_id, phone_code, phone_number, first_name, last_name) VALUES('22', '2022', '91', '1000000021', 'yashh', 'jaggi');
+
+
+INSERT INTO vicidial_list VALUES (25236,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','3104125547','','donald','','pope','','','','','CA','','91342','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25237,'2020-10-31 11:43:43','2020-11-07 14:42:14','PDROP','VDAD','','',1018,-5.00,'Y','1','6097062805','','henry','','jackson','','','','','NJ','','8081','','M','0000-00-00','','','','',2,'2020-11-07 09:42:14',0,'',0);
+INSERT INTO vicidial_list VALUES (25238,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','7602711013','','jill','','bond','','','','','CA','','92126','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25239,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','7607039925','','cynthia','','steele','','','','','CO','','81501','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25240,'2020-10-31 11:43:43','2020-11-07 14:43:50','B','VDAD','','',1018,-6.00,'Y','1','9016439345','','naomi','','preyer','','','','','TN','','38108','','M','0000-00-00','','','','',2,'2020-11-07 08:42:57',0,'',0);
+INSERT INTO vicidial_list VALUES (25241,'2020-10-31 11:43:43','2020-11-07 14:43:50','PDROP','VDAD','','',1018,-6.00,'Y','1','9019493553','','james','','harris','','','','','TN','','38141','','M','0000-00-00','','','','',2,'2020-11-07 08:43:50',0,'',0);
+INSERT INTO vicidial_list VALUES (25242,'2020-10-31 11:43:43','2020-11-07 14:44:38','PDROP','VDAD','','',1018,-6.00,'Y','1','9032970882','','beverly','','hanon','','','','','TX','','75604','','M','0000-00-00','','','','',2,'2020-11-07 08:44:38',0,'',0);
+INSERT INTO vicidial_list VALUES (25243,'2020-10-31 11:43:43','2020-11-07 14:45:41','PDROP','VDAD','','',1018,-6.00,'Y','1','9034878831','','myrtle','','stevenson','','','','','TX','','75092','','M','0000-00-00','','','','',2,'2020-11-07 08:45:24',0,'',0);
+INSERT INTO vicidial_list VALUES (25244,'2020-10-31 11:43:43','2020-11-07 14:46:24','PDROP','VDAD','','',1018,-6.00,'Y','1','9038393777','','rodeny','','richardson','','','','','TX','','75791','','M','0000-00-00','','','','',2,'2020-11-07 08:45:42',0,'',0);
+INSERT INTO vicidial_list VALUES (25245,'2020-10-31 11:43:43','2020-11-07 14:46:25','PDROP','VDAD','','',1018,-5.00,'Y','1','9042070937','','vickie','','souder','','','','','FL','','32211','','M','0000-00-00','','','','',2,'2020-11-07 09:46:25',0,'',0);
+INSERT INTO vicidial_list VALUES (25246,'2020-10-31 11:43:43','2020-11-07 14:40:06','B','VDAD','','',1018,-5.00,'N','1','9042108666','','shirley','','gray','','','','','FL','','32054','','M','0000-00-00','','','','',1,'2020-10-31 12:57:37',0,'',0);
+INSERT INTO vicidial_list VALUES (25247,'2020-10-31 11:43:43','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9043799278','','rafalar','','hightower','','','','','FL','','32209','','M','0000-00-00','','','','',1,'2020-10-31 12:57:40',0,'',0);
+INSERT INTO vicidial_list VALUES (25248,'2020-10-31 11:43:43','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9047556291','','judy','','atkinson','','','','','FL','','32244','','M','0000-00-00','','','','',1,'2020-10-31 12:58:16',0,'',0);
+INSERT INTO vicidial_list VALUES (25249,'2020-10-31 11:43:43','2020-11-07 14:40:06','B','VDAD','','',1018,-5.00,'N','1','9089433299','','orildo','','socarras','','','','','NJ','','7008','','M','0000-00-00','','','','',1,'2020-10-31 12:58:31',0,'',0);
+INSERT INTO vicidial_list VALUES (25250,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9092299953','','valerie','','vaughn','','','','','CA','','92410','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25251,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9092762528','','rosie','','garcia','','','','','CA','','91762','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25252,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9092842590','','chester','','roberts','','','','','CA','','91709','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25253,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9093805890','','marie','','olvera','','','','','CA','','92410','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25254,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9093984431','','loweta','','carroll','','','','','CA','','71709','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25255,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9095283703','','rickey','','lawrence','','','','','CA','','92324','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25256,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9095733034','','ramon','','mendoza','','','','','CA','','92880','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25257,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9096448325','','antoinette','','sunday','','','','','CA','','91786','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25258,'2020-10-31 11:43:43','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-8.00,'N','1','9096801506','','allen','','mullicane','','','','','OK','','73086','','M','0000-00-00','','','','',1,'2020-10-31 12:14:11',0,'',0);
+INSERT INTO vicidial_list VALUES (25259,'2020-10-31 11:43:43','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9096802378','','leo','','siongco','','','','','CA','','91710','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25260,'2020-10-31 11:43:43','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9103361050','','daniel','','stpetert','','','','','NC','','28334','','M','0000-00-00','','','','',1,'2020-10-31 12:58:46',0,'',0);
+INSERT INTO vicidial_list VALUES (25261,'2020-10-31 11:43:43','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9103669126','','john','','roberts','','','','','NC','','28306','','M','0000-00-00','','','','',1,'2020-10-31 12:59:14',0,'',0);
+INSERT INTO vicidial_list VALUES (25262,'2020-10-31 11:43:43','2020-11-07 14:40:06','NA','VDAD','','',1018,-5.00,'N','1','9103844544','','huey','','revels','','','','','NC','','28352','','M','0000-00-00','','','','',1,'2020-10-31 12:59:25',0,'',0);
+INSERT INTO vicidial_list VALUES (25263,'2020-10-31 11:43:43','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9104749397','','mary','','cole','','','','','NC','','28358','','M','0000-00-00','','','','',1,'2020-10-31 13:00:20',0,'',0);
+INSERT INTO vicidial_list VALUES (25264,'2020-10-31 11:43:43','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9105285508','','julia','','mcallister','','','','','NC','','28327','','M','0000-00-00','','','','',1,'2020-10-31 13:00:41',0,'',0);
+INSERT INTO vicidial_list VALUES (25265,'2020-10-31 11:43:43','2020-11-07 14:40:06','B','VDAD','','',1018,-5.00,'N','1','9109886980','','lorine','','davis','','','','','NC','','28433','','M','0000-00-00','','','','',1,'2020-10-31 13:00:53',0,'',0);
+INSERT INTO vicidial_list VALUES (25266,'2020-10-31 11:43:43','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9109959774','','stewart','','nicholson','','','','','NC','','28379','','M','0000-00-00','','','','',1,'2020-10-31 13:01:19',0,'',0);
+INSERT INTO vicidial_list VALUES (25267,'2020-10-31 11:43:43','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9132328367','','elise','','henderson','','','','','KS','','66112','','M','0000-00-00','','','','',1,'2020-10-31 12:14:51',0,'',0);
+INSERT INTO vicidial_list VALUES (25268,'2020-10-31 11:43:44','2020-11-07 14:40:06','NA','VDAD','','',1018,-6.00,'N','1','9139403516','','kristine','','shumway','','','','','KS','','66210','','M','0000-00-00','','','','',1,'2020-10-31 12:14:54',0,'',0);
+INSERT INTO vicidial_list VALUES (25269,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9139617240','','connie best','','best','','','','','MO','','64138','','M','0000-00-00','','','','',1,'2020-10-31 12:15:25',0,'',0);
+INSERT INTO vicidial_list VALUES (25270,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9146459817','','bernell','','henry','','','','','NY','','10701','','M','0000-00-00','','','','',1,'2020-10-31 13:01:42',0,'',0);
+INSERT INTO vicidial_list VALUES (25271,'2020-10-31 11:43:44','2020-11-07 14:40:06','B','VDAD','','',1018,-5.00,'N','1','9146670938','','charles','','cowan','','','','','NY','','10552','','M','0000-00-00','','','','',1,'2020-10-31 13:01:47',0,'',0);
+INSERT INTO vicidial_list VALUES (25272,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9149545875','','charmae','','sykes','','','','','NY','','10566','','M','0000-00-00','','','','',1,'2020-10-31 13:02:33',0,'',0);
+INSERT INTO vicidial_list VALUES (25273,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-7.00,'N','1','9152220171','','dominick','','jacobsen','','','','','TX','','79924','','M','0000-00-00','','','','',1,'2020-10-31 11:16:10',0,'',0);
+INSERT INTO vicidial_list VALUES (25274,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-7.00,'N','1','9152982425','','bernadette','','walker','','','','','TX','','88539','','M','0000-00-00','','','','',1,'2020-10-31 11:16:15',0,'',0);
+INSERT INTO vicidial_list VALUES (25275,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9162421927','','leann','','ellwanger','','','','','CA','','96001','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25276,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-8.00,'N','1','9164174177','','michael','','delavallade','','','','','IL','','61605','','M','0000-00-00','','','','',1,'2020-10-31 12:16:36',0,'',0);
+INSERT INTO vicidial_list VALUES (25277,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9165851599','','robin','','ware','','','','','CA','','95835','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25278,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9168029194','','sheri','','rodriguez','','','','','CA','','95624','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25279,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9168171470','','renee','','shaw','','','','','CA','','95670','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25280,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9173999228','','daryl','','demino','','','','','NY','','11369','','M','0000-00-00','','','','',1,'2020-10-31 13:02:40',0,'',0);
+INSERT INTO vicidial_list VALUES (25281,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9175728730','','christie','','smith','','','','','NY','','10994','','M','0000-00-00','','','','',1,'2020-10-31 13:03:11',0,'',0);
+INSERT INTO vicidial_list VALUES (25282,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9179072832','','lurene','','cunningham','','','','','NY','','10466','','M','0000-00-00','','','','',1,'2020-10-31 13:03:31',0,'',0);
+INSERT INTO vicidial_list VALUES (25283,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9182823928','','lutricia','','mosley','','','','','OK','','74033','','M','0000-00-00','','','','',1,'2020-10-31 12:17:11',0,'',0);
+INSERT INTO vicidial_list VALUES (25284,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9184471974','','calvin','','gresham','','','','','OK','','74107','','M','0000-00-00','','','','',1,'2020-10-31 12:17:17',0,'',0);
+INSERT INTO vicidial_list VALUES (25285,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9185815792','','doris','','porter','','','','','OK','','74106','','M','0000-00-00','','','','',1,'2020-10-31 12:17:42',0,'',0);
+INSERT INTO vicidial_list VALUES (25286,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9187064712','','douglas','','brown','','','','','OK','','74447','','M','0000-00-00','','','','',1,'2020-10-31 12:18:07',0,'',0);
+INSERT INTO vicidial_list VALUES (25287,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9193974205','','thelma','','mitchell','','','','','NC','','27610','','M','0000-00-00','','','','',1,'2020-10-31 13:03:34',0,'',0);
+INSERT INTO vicidial_list VALUES (25288,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9194757533','','sylvia','','pettiford','','','','','NC','','27573','','M','0000-00-00','','','','',1,'2020-10-31 13:04:10',0,'',0);
+INSERT INTO vicidial_list VALUES (25289,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9195225849','','brenda','','crider','','','','','NC','','27606','','M','0000-00-00','','','','',1,'2020-10-31 13:04:15',0,'',0);
+INSERT INTO vicidial_list VALUES (25290,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9199023157','','gail','','arnold','','','','','NC','','27520','','M','0000-00-00','','','','',1,'2020-10-31 13:04:40',0,'',0);
+INSERT INTO vicidial_list VALUES (25291,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9202245139','','shirley','','laundrie','','','','','WI','','54956','','M','0000-00-00','','','','',1,'2020-10-31 12:18:38',0,'',0);
+INSERT INTO vicidial_list VALUES (25292,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9202296944','','carol','','kuklinski','','','','','WI','','54923','','M','0000-00-00','','','','',1,'2020-10-31 12:18:43',0,'',0);
+INSERT INTO vicidial_list VALUES (25293,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9203092424','','toni','','gevaert','','','','','WI','','54313','','M','0000-00-00','','','','',1,'2020-10-31 12:19:19',0,'',0);
+INSERT INTO vicidial_list VALUES (25294,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9205639283','','cindy','','trewyn','','','','','WI','','53538','','M','0000-00-00','','','','',1,'2020-10-31 12:19:24',0,'',0);
+INSERT INTO vicidial_list VALUES (25295,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9254326579','','kevin','','benjamin','','','','','CA','','94565','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25296,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9256008835','','michael','','petzing','','','','','CA','','94588','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25297,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9256284688','','rhonda','','keefer','','','','','CA','','94561','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25298,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9258233049','','dinah','','demesa','','','','','CA','','94501','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25299,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-7.00,'N','1','9282762991','','debbie','','jaime','','','','','AZ','','85352','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25300,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-7.00,'N','1','9286747297','','louella','','tsinigini','','','','','AZ','','86503','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25301,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9312006917','','shirley','','conway','','','','','TN','','37723','','M','0000-00-00','','','','',1,'2020-10-31 12:19:54',0,'',0);
+INSERT INTO vicidial_list VALUES (25302,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9315654205','','thomas','','howard','','','','','TN','','38473','','M','0000-00-00','','','','',1,'2020-10-31 12:20:07',0,'',0);
+INSERT INTO vicidial_list VALUES (25303,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9316910092','','connie','','vanzant','','','','','TN','','37398','','M','0000-00-00','','','','',1,'2020-10-31 12:20:38',0,'',0);
+INSERT INTO vicidial_list VALUES (25304,'2020-10-31 11:43:44','2020-11-07 14:40:06','NA','VDAD','','',1018,-6.00,'N','1','9362228569','','rosa','','barrett','','','','','TX','','75844','','M','0000-00-00','','','','',1,'2020-10-31 12:21:03',0,'',0);
+INSERT INTO vicidial_list VALUES (25305,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9362699737','','queen','','norris','','','','','TX','','75954','','M','0000-00-00','','','','',1,'2020-10-31 12:21:13',0,'',0);
+INSERT INTO vicidial_list VALUES (25306,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9363486416','','danny','','roberts','','','','','TX','','77864','','M','0000-00-00','','','','',1,'2020-10-31 12:21:41',0,'',0);
+INSERT INTO vicidial_list VALUES (25307,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9366979641','','james','','crenshaw','','','','','TX','','77360','','M','0000-00-00','','','','',1,'2020-10-31 12:22:19',0,'',0);
+INSERT INTO vicidial_list VALUES (25308,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9374507144','','donald r','','akers','','','','','OH','','43072','','M','0000-00-00','','','','',1,'2020-10-31 13:04:46',0,'',0);
+INSERT INTO vicidial_list VALUES (25309,'2020-10-31 11:43:44','2020-11-07 14:40:06','B','VDAD','','',1018,-5.00,'N','1','9375324912','','arthur','','mack','','','','','OH','','45385','','M','0000-00-00','','','','',1,'2020-10-31 13:05:21',0,'',0);
+INSERT INTO vicidial_list VALUES (25310,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9376992045','','carol','','flowers','','','','','OH','','45405','','M','0000-00-00','','','','',1,'2020-10-31 13:05:26',0,'',0);
+INSERT INTO vicidial_list VALUES (25311,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9377253538','','rickey','','reynolds','','','','','OH','','45107','','M','0000-00-00','','','','',1,'2020-10-31 13:06:12',0,'',0);
+INSERT INTO vicidial_list VALUES (25312,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9404522212','','diane','','walker','','','','','TX','','76401','','M','0000-00-00','','','','',1,'2020-10-31 12:22:30',0,'',0);
+INSERT INTO vicidial_list VALUES (25313,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9414841927','','else','','albert','','','','','FL','','34285','','M','0000-00-00','','','','',1,'2020-10-31 13:06:15',0,'',0);
+INSERT INTO vicidial_list VALUES (25314,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9494395698','','joseph','','cleland','','','','','CA','','92653','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25315,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9498554989','','heidi','','rockwell','','','','','CA','','92629','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25316,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9512339942','','mary','','chavira','','','','','CA','','92335','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25317,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9512649442','','carolina','','ruiz','','','','','CA','','92879','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25318,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9512752181','','lynda','','probst','','','','','CA','','92506','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25319,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9513275054','','daniel','','duhigg','','','','','CA','','92570','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25320,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9515441370','','nathaniel','','dixon','','','','','CA','','92376','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25321,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9515701761','','hurfretta','','johnson','','','','','CA','','92555','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25322,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9519062888','','nancy','','johnson','','','','','CA','','92399','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25323,'2020-10-31 11:43:44','2020-11-07 14:40:06','B','VDAD','','',1018,-5.00,'N','1','9544017396','','sharon','','conliffe-torres','','','','','FL','','33305','','M','0000-00-00','','','','',1,'2020-10-31 13:07:08',0,'',0);
+INSERT INTO vicidial_list VALUES (25324,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9545010062','','michael','','medley','','','','','FL','','33073','','M','0000-00-00','','','','',1,'2020-10-31 13:07:13',0,'',0);
+INSERT INTO vicidial_list VALUES (25325,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9545316082','','glenn','','terhune','','','','','FL','','33441','','M','0000-00-00','','','','',1,'2020-10-31 13:07:46',0,'',0);
+INSERT INTO vicidial_list VALUES (25326,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9545332698','','derek','','fung','','','','','FL','','33328','','M','0000-00-00','','','','',1,'2020-10-31 13:08:01',0,'',0);
+INSERT INTO vicidial_list VALUES (25327,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9549143343','','maria','','taylor','','','','','FL','','33312','','M','0000-00-00','','','','',1,'2020-10-31 13:08:12',0,'',0);
+INSERT INTO vicidial_list VALUES (25328,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9549370030','','fred','','fass','','','','','FL','','33434','','M','0000-00-00','','','','',1,'2020-10-31 13:08:40',0,'',0);
+INSERT INTO vicidial_list VALUES (25329,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9562082916','','carmen','','perez','','','','','TX','','78584','','M','0000-00-00','','','','',1,'2020-10-31 12:22:42',0,'',0);
+INSERT INTO vicidial_list VALUES (25330,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9563369584','','jorge','','tapia','','','','','TX','','78501','','M','0000-00-00','','','','',1,'2020-10-31 12:22:50',0,'',0);
+INSERT INTO vicidial_list VALUES (25331,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-7.00,'N','1','9705601983','','louise','','salt','','','','','CO','','81334','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25332,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-7.00,'N','1','9705892246','','albert','','hughes','','','','','CO','','81504','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25333,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9712413116','','candise','','privatsky','','','','','OR','','97128','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25334,'2020-10-31 11:43:44','0000-00-00 00:00:00','NEW','','','',1018,-8.00,'N','1','9713882481','','billy','','gates','','','','','OR','','97301','','M','0000-00-00','','','','',0,'2008-01-01 00:00:00',0,'',0);
+INSERT INTO vicidial_list VALUES (25335,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9727348550','','gael','','cassady','','','','','TX','','75287','','M','0000-00-00','','','','',1,'2020-10-31 12:23:23',0,'',0);
+INSERT INTO vicidial_list VALUES (25336,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9728972037','','gary','','ray','','','','','TX','','75081','','M','0000-00-00','','','','',1,'2020-10-31 12:23:39',0,'',0);
+INSERT INTO vicidial_list VALUES (25337,'2020-10-31 11:43:44','2020-11-07 14:40:06','NA','VDAD','','',1018,-6.00,'N','1','9729779162','','carolyn','','evans','','','','','TX','','75181','','M','0000-00-00','','','','',1,'2020-10-31 12:23:49',0,'',0);
+INSERT INTO vicidial_list VALUES (25338,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9732272868','','helen','','yuhas','','','','','NJ','','7885','','M','0000-00-00','','','','',1,'2020-10-31 13:09:03',0,'',0);
+INSERT INTO vicidial_list VALUES (25339,'2020-10-31 11:43:44','2020-11-07 14:40:06','B','VDAD','','',1018,-5.00,'N','1','9733422072','','arban','','quittley','','','','','NJ','','7204','','M','0000-00-00','','','','',1,'2020-10-31 13:09:23',0,'',0);
+INSERT INTO vicidial_list VALUES (25340,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9734270985','','christopher','','cunningham','','','','','NJ','','7039','','M','0000-00-00','','','','',1,'2020-10-31 13:09:23',0,'',0);
+INSERT INTO vicidial_list VALUES (25341,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9735743697','','carol','','washington','','','','','NJ','','7012','','M','0000-00-00','','','','',1,'2020-10-31 13:10:06',0,'',0);
+INSERT INTO vicidial_list VALUES (25342,'2020-10-31 11:43:44','2020-11-07 14:40:06','B','VDAD','','',1018,-5.00,'N','1','9782552153','','robert','','abrahams','','','','','MA','','19521','','M','0000-00-00','','','','',1,'2020-10-31 13:10:17',0,'',0);
+INSERT INTO vicidial_list VALUES (25343,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9786965315','','donna','','duval','','','','','MA','','1420','','M','0000-00-00','','','','',1,'2020-10-31 13:10:50',0,'',0);
+INSERT INTO vicidial_list VALUES (25344,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9787298346','','charles','','page','','','','','MA','','1826','','M','0000-00-00','','','','',1,'2020-10-31 13:11:10',0,'',0);
+INSERT INTO vicidial_list VALUES (25345,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9794511827','','helen','','nowicki','','','','','TX','','77834','','M','0000-00-00','','','','',1,'2020-10-31 12:24:07',0,'',0);
+INSERT INTO vicidial_list VALUES (25346,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9798220254','','eleanor','','groce','','','','','TX','','77803','','M','0000-00-00','','','','',1,'2020-10-31 12:25:05',0,'',0);
+INSERT INTO vicidial_list VALUES (25347,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-5.00,'N','1','9802391046','','julius','','cuthbertson','','','','','NC','','28110','','M','0000-00-00','','','','',1,'2020-10-31 13:11:40',0,'',0);
+INSERT INTO vicidial_list VALUES (25348,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9855079836','','janet','','strate','','','','','LA','','70466','','M','0000-00-00','','','','',1,'2020-10-31 12:25:10',0,'',0);
+INSERT INTO vicidial_list VALUES (25349,'2020-10-31 11:43:44','2020-11-07 14:40:06','NA','VDAD','','',1018,-6.00,'N','1','9856871729','','dianne','','hilliard','','','','','LA','','70401','','M','0000-00-00','','','','',1,'2020-10-31 12:25:48',0,'',0);
+INSERT INTO vicidial_list VALUES (25350,'2020-10-31 11:43:44','2020-11-07 14:40:06','PDROP','VDAD','','',1018,-6.00,'N','1','9858786577','','joyce','','anderson','','','','','LA','','70443','','M','0000-00-00','','','','',1,'2020-10-31 12:25:51',0,'',0);
+INSERT INTO vicidial_list VALUES (25351,'2020-10-31 11:43:44','2020-11-07 14:40:06','NA','VDAD','','',1018,-5.00,'N','1','9899120628','','gary','','dillon','','','','','MI','','48726','','M','0000-00-00','','','','',1,'2020-10-31 13:11:43',0,'',0);
+
+
+
+INSERT INTO ravenn_auto_dial VALUES (25236,'2020-11-01 07:31:24','donald','pope','1','3104125547',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25237,'2020-10-31 16:57:38','henry','jackson','1','6097062805',1018,'you are not ','this is not ','N',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25238,'2020-11-01 07:31:24','jill','bond','1','7602711013',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25239,'2020-11-01 07:31:24','cynthia','steele','1','7607039925',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25240,'2020-11-01 07:31:24','naomi','preyer','1','9016439345',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25241,'2020-11-07 14:44:36','james','harris','1','9019493553',1018,NULL,'would you set ','U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25242,'2020-11-07 14:45:22','beverly','hanon','1','9032970882',1018,'uhhuh ','hello ','U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25243,'2020-11-01 07:31:24','myrtle','stevenson','1','9034878831',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25244,'2020-11-07 14:46:21','rodeny','richardson','1','9038393777',1018,'this is ',NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25245,'2020-11-07 14:47:00','vickie','souder','1','9042070937',1018,'yes yes I can ',NULL,'Y',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25246,'2020-11-01 07:31:24','shirley','gray','1','9042108666',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25247,'2020-10-31 16:58:14','rafalar','hightower','1','9043799278',1018,NULL,'thank ','U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25248,'2020-11-01 07:31:24','judy','atkinson','1','9047556291',1018,NULL,NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25249,'2020-11-01 07:31:24','orildo','socarras','1','9089433299',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25250,'2020-11-01 07:31:24','valerie','vaughn','1','9092299953',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25251,'2020-11-01 07:31:24','rosie','garcia','1','9092762528',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25252,'2020-11-01 07:31:24','chester','roberts','1','9092842590',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25253,'2020-11-01 07:31:24','marie','olvera','1','9093805890',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25254,'2020-11-01 07:31:24','loweta','carroll','1','9093984431',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25255,'2020-11-01 07:31:24','rickey','lawrence','1','9095283703',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25256,'2020-11-01 07:31:24','ramon','mendoza','1','9095733034',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25257,'2020-11-01 07:31:25','antoinette','sunday','1','9096448325',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25258,'2020-10-31 17:14:48','allen','mullicane','1','9096801506',1018,'yes to be looking for ',NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25259,'2020-11-01 07:31:25','leo','siongco','1','9096802378',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25260,'2020-10-31 16:59:11','daniel','stpetert','1','9103361050',1018,'E. six one zero five zero ',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25261,'2020-10-31 17:00:18','john','roberts','1','9103669126',1018,'all ',NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25262,'2020-11-01 07:31:25','huey','revels','1','9103844544',1018,NULL,NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25263,'2020-10-31 17:00:51','mary','cole','1','9104749397',1018,'seven ',NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25264,'2020-10-31 17:01:16','julia','mcallister','1','9105285508',1018,'yes ',NULL,'Y',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25265,'2020-11-01 07:31:25','lorine','davis','1','9109886980',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25266,'2020-11-01 07:31:25','stewart','nicholson','1','9109959774',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25267,'2020-10-31 17:15:21','elise','henderson','1','9132328367',1018,NULL,NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25268,'2020-11-01 07:31:25','kristine','shumway','1','9139403516',1018,NULL,NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25269,'2020-10-31 17:16:13','connie best','best','1','9139617240',1018,'one seven two four zero is not a ',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25270,'2020-10-31 17:02:30','bernell','henry','1','9146459817',1018,NULL,'credo health group  I\'m not sure you got the right','N',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25271,'2020-11-01 07:31:25','charles','cowan','1','9146670938',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25272,'2020-10-31 17:03:09','charmae','sykes','1','9149545875',1018,'yes ',NULL,'Y',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25273,'2020-10-31 17:17:13','dominick','jacobsen','1','9152220171',1018,'okay hello  yes I do I can\'t talk right now I\'ll t',NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25274,'2020-11-01 07:31:25','bernadette','walker','1','9152982425',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25275,'2020-11-01 07:31:25','leann','ellwanger','1','9162421927',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25276,'2020-11-01 07:31:25','michael','delavallade','1','9164174177',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25277,'2020-11-01 07:31:25','robin','ware','1','9165851599',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25278,'2020-11-01 07:31:25','sheri','rodriguez','1','9168029194',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25279,'2020-11-01 07:31:25','renee','shaw','1','9168171470',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25280,'2020-10-31 17:03:31','daryl','demino','1','9173999228',1018,'two eight is not available at the tone please ',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25281,'2020-11-01 07:31:25','christie','smith','1','9175728730',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25282,'2020-10-31 17:04:12','lurene','cunningham','1','9179072832',1018,'hello I can hear you ',NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25283,'2020-11-01 07:31:25','lutricia','mosley','1','9182823928',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25284,'2020-10-31 17:18:04','calvin','gresham','1','9184471974',1018,'and a brief message and we will return your call t',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25285,'2020-10-31 17:18:40','doris','porter','1','9185815792',1018,'well right now but if you will leave your name num','tone when finished you may hang up or press pound ','AM',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25286,'2020-10-31 17:18:36','douglas','brown','1','9187064712',1018,'at the town please record you message when you hav',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25287,'2020-11-01 07:31:19','thelma','mitchell','1','9193974205',1018,'I\'m sorry I think you\'re wrong number ',NULL,'N',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25288,'2020-10-31 17:04:38','sylvia','pettiford','1','9194757533',1018,'at the telling please record your message when you',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25289,'2020-10-31 17:04:44','brenda','crider','1','9195225849',1018,'hello what calling please ',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25290,'2020-10-31 17:05:24','gail','arnold','1','9199023157',1018,'wanted callers the number you are calling from has',NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25291,'2020-10-31 17:19:21','shirley','laundrie','1','9202245139',1018,'I don\'t know ','I don\'t know ','U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25292,'2020-10-31 17:19:16','carol','kuklinski','1','9202296944',1018,'yeah ',NULL,'Y',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25293,'2020-10-31 17:20:05','toni','gevaert','1','9203092424',1018,'I can ',NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25294,'2020-11-01 07:31:20','cindy','trewyn','1','9205639283',1018,'I\'m sorry I think you\'re wrong number ',NULL,'N',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25295,'2020-11-01 07:31:25','kevin','benjamin','1','9254326579',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25296,'2020-11-01 07:31:25','michael','petzing','1','9256008835',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25297,'2020-11-01 07:31:25','rhonda','keefer','1','9256284688',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25298,'2020-11-01 07:31:25','dinah','demesa','1','9258233049',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25299,'2020-11-01 07:31:25','debbie','jaime','1','9282762991',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25300,'2020-11-01 07:31:25','louella','tsinigini','1','9286747297',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25301,'2020-10-31 17:20:36','shirley','conway','1','9312006917',1018,NULL,NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25302,'2020-10-31 17:21:00','thomas','howard','1','9315654205',1018,NULL,NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25303,'2020-10-31 17:21:12','connie','vanzant','1','9316910092',1018,'more options to leave a call back number press fiv',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25304,'2020-11-01 07:31:25','rosa','barrett','1','9362228569',1018,NULL,NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25305,'2020-11-01 07:31:25','queen','norris','1','9362699737',1018,NULL,NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25306,'2020-10-31 17:22:28','danny','roberts','1','9363486416',1018,'area code and phone number of that subscriber or p',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25307,'2020-11-01 07:31:25','james','crenshaw','1','9366979641',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25308,'2020-10-31 17:05:18','donald r','akers','1','9374507144',1018,'there lay yes ',NULL,'Y',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25309,'2020-11-01 07:31:25','arthur','mack','1','9375324912',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25310,'2020-10-31 17:06:10','carol','flowers','1','9376992045',1018,'all right ',NULL,'Y',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25311,'2020-10-31 17:07:04','rickey','reynolds','1','9377253538',1018,'now ','no ','N',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25312,'2020-11-01 07:31:25','diane','walker','1','9404522212',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25313,'2020-10-31 17:07:10','else','albert','1','9414841927',1018,' as soon as we can thank you ',NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25314,'2020-11-01 07:31:25','joseph','cleland','1','9494395698',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25315,'2020-11-01 07:31:25','heidi','rockwell','1','9498554989',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25316,'2020-11-01 07:31:25','mary','chavira','1','9512339942',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25317,'2020-11-01 07:31:25','carolina','ruiz','1','9512649442',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25318,'2020-11-01 07:31:25','lynda','probst','1','9512752181',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25319,'2020-11-01 07:31:25','daniel','duhigg','1','9513275054',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25320,'2020-11-01 07:31:25','nathaniel','dixon','1','9515441370',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25321,'2020-11-01 07:31:25','hurfretta','johnson','1','9515701761',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25322,'2020-11-01 07:31:25','nancy','johnson','1','9519062888',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25323,'2020-11-01 07:31:25','sharon','conliffe-torres','1','9544017396',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25324,'2020-10-31 17:07:43','michael','medley','1','9545010062',1018,NULL,NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25325,'2020-11-01 07:31:25','glenn','terhune','1','9545316082',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25326,'2020-10-31 17:08:38','derek','fung','1','9545332698',1018,NULL,NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25327,'2020-10-31 17:09:01','maria','taylor','1','9549143343',1018,'hi how you doing today ','but yeah things got you know thing got  three is n','N',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25328,'2020-10-31 17:09:19','fred','fass','1','9549370030',1018,'I can ',NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25329,'2020-10-31 17:23:21','carmen','perez','1','9562082916',1018,'one six is not available at the tone please re ',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25330,'2020-10-31 17:23:37','jorge','tapia','1','9563369584',1018,'he\'s not available at the tone please record your ',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25331,'2020-11-01 07:31:25','louise','salt','1','9705601983',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25332,'2020-11-01 07:31:25','albert','hughes','1','9705892246',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25333,'2020-11-01 07:31:25','candise','privatsky','1','9712413116',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25334,'2020-11-01 07:31:25','billy','gates','1','9713882481',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25335,'2020-10-31 17:23:45','gael','cassady','1','9727348550',1018,'you have your call connected ',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25336,'2020-10-31 17:24:05','gary','ray','1','9728972037',1018,'seven at the tone please record your voice ',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25337,'2020-11-01 07:31:25','carolyn','evans','1','9729779162',1018,NULL,NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25338,'2020-11-01 07:31:25','helen','yuhas','1','9732272868',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25339,'2020-11-01 07:31:25','arban','quittley','1','9733422072',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25340,'2020-10-31 17:09:57','christopher','cunningham','1','9734270985',1018,NULL,NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25341,'2020-10-31 17:10:46','carol','washington','1','9735743697',1018,'French one if you have reached the answering servi','zero now and you will be connected with an answeri','U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25342,'2020-11-01 07:31:25','robert','abrahams','1','9782552153',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25343,'2020-10-31 17:11:37','donna','duval','1','9786965315',1018,'we will return your call ',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25344,'2020-11-01 07:31:25','charles','page','1','9787298346',1018,NULL,NULL,'U',0,0);
+INSERT INTO ravenn_auto_dial VALUES (25345,'2020-10-31 17:25:07','helen','nowicki','1','9794511827',1018,NULL,NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25346,'2020-10-31 17:25:47','eleanor','groce','1','9798220254',1018,'simply hang up or press pound for further options ',NULL,'AM',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25347,'2020-10-31 17:12:21','julius','cuthbertson','1','9802391046',1018,'I can hear you ',NULL,'U',1,1);
+INSERT INTO ravenn_auto_dial VALUES (25348,'2020-11-01 07:31:25','janet','strate','1','9855079836',1018,'hello ',NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25349,'2020-11-01 07:31:25','dianne','hilliard','1','9856871729',1018,NULL,NULL,'U',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25350,'2020-11-01 07:31:24','joyce','anderson','1','9858786577',1018,'all right who is this ',NULL,'Y',1,0);
+INSERT INTO ravenn_auto_dial VALUES (25351,'2020-11-01 07:31:25','gary','dillon','1','9899120628',1018,NULL,NULL,'U',1,0);
+

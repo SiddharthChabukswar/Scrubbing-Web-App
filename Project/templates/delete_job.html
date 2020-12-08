@@ -1,0 +1,108 @@
+{% extends "header.html" %}
+
+{% set active_page = "delete_job" %}
+
+{% block title %}Update Job{% endblock %}
+
+{% block body %}
+	<div class="container" style="margin-top: 90px;">
+		<div class="row row-content d-flex flex-row-reverse">
+			<div class="d-sm-flex align-items-center justify-content-between mb-4" style="padding: 10px;">
+         		<a href="/generate_reports/" class="d-none d-sm-inline-block btn-sm shadow-sm" style="background-color: #ff7820; color: white; text-decoration: none; padding: 10px;"><i class="fa fa-download fa-sm text-white-50"></i> Generate Report</a>
+      		</div>
+		</div>
+		<div class="row row-content">
+			<div class="col-12 d-flex justify-content-center">
+				<p class="text-secondary display-3">Update Job</p>
+			</div>
+		</div>
+		<div class="row row-content mb-1">
+			<div class="col-12 d-flex justify-content-center">
+				<h4 class="text-secondary">Delete or update job parameters</h4>
+			</div>
+		</div>
+	</div>
+	<div class="row row-content align-items-center">
+		<div class="col-6 offset-sm-3">
+			<div class="card">
+				<h6 class="card-header bg-dark text-white d-flex justify-content-center">Search a job here to check if it exists</h6>
+				<div class="card-body">
+					<form action="" method="POST">
+						<div class="form-group row">
+							<div class="col-12 col-sm-2">
+								<p><b>Job number</b></p>
+							</div>
+							<div class="col-12 col-sm-7">
+								<input class="form-control" type="number" name="job_number" id="job_number" value="{{request.form.job_number}}" required>
+							</div>
+							<div class="col-12 col-sm-3">
+								<input type="submit" value="Check" name="post_type" class=" form-control btn btn-block btn-primary"/>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="row row-content d-flex justify-content-center">
+		</div>
+		{%if checked%}
+			{%if error%}
+				<div><h5 class="d-flex justify-content-center mt-2 text-danger">{{error}}</h5></div>
+			{%else%}
+			<div class="container-fluid mt-3">
+				<table class="table table-striped">
+				<thead>
+				<tr>
+				<th scope="col"> Job number </th>
+				  <th scope="col"> List id </th>
+				  <th scope="col"> Username </th> 
+				  <th scope="col"> Firstname </th> 
+				  <th scope="col"> Lastname </th> 
+				  <th scope="col"> Job created </th>	  
+				  <th scope="col"> Planned call-date </th>
+				  <th scope="col"> Job start-time </th> 
+				  <th scope="col"> Job expected end-time </th> 
+				  <th scope="col"> Status </th> 
+				</tr>
+				</thead>
+				  <tbody id="contents">
+					<tr>
+					{% for value in data %}
+					<td> {{ value }} </td>
+					{% endfor %}
+					</tr>
+				  </tbody>
+				</table>
+			</div>
+			<br> 
+			<div class="row row-content align-items-center">
+            <div class="col-4 offset-sm-4">
+            <div class="card">
+            <h6 class="card-header bg-danger text-white text-white d-flex justify-content-center">Confirm deletion</h6>
+            <div class="card-body">
+			<form action="" method="POST">
+				<div class="form-group row">
+				<div class="col-12 d-flex justify-content-center">
+				<h4>Do you want to delete the above job?</h4>
+				</div>
+				</div>
+				<div class="form-group row">
+				<div class="col-6 col-sm-3 offset-sm-3">
+				<input type="submit" name="post_type" value="Yes" class="form-control btn btn-block btn-danger text-white">
+				</div>
+				<div class="col-6 col-sm-3">
+				<input type="submit" name="post_type" value="No" class="btn btn-block btn-success text-white">
+				</div>
+				</div>
+			</form>
+			</div>
+			</div>
+			</div>
+			</div>
+			{%endif%}
+		{%endif%}
+	</body>
+</html>
+
+{% endblock %}

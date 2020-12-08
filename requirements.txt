@@ -1,0 +1,6 @@
+flask
+mysqlclient
+passlib
+ibm-watson
+numpy
+json

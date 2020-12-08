@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Login</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/style.css')}}">
+</head>
+<body>
+	<div class="loginbox">
+		<a href="https://www.ravenn.tech" target="_blank">
+			<img src="{{ url_for('static', filename = 'birdy.png')}}" href="https://www.ravenn.tech" class="birdy">
+		</a>
+		<div class="fields">
+			<p class="welcome"> Welcome Back </p>
+			<form action="" method="POST">
+				</br></br>
+				<input type="text" name="username" placeholder="Username" value="{{request.form.username}}" required></br></br> 
+				<input type="password" name="password" placeholder="Password" value="{{request.form.password}}" required> </body></br></br>
+				<div class="sbtBtn">
+					<input type="submit" name="submit" value="Login"></br></br>
+				</div>
+			</form>
+			<p>{{error}}</p>
+		</div> 
+	</div>
+</body>
+</html>

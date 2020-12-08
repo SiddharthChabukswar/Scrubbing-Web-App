@@ -1,0 +1,63 @@
+{% extends "header.html" %}
+
+{% set active_page = "home" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+	<div class="container" style="margin-top: 90px;">
+		
+		<div class="row row-content d-flex flex-row-reverse">
+			<div class="d-sm-flex align-items-center justify-content-between mb-4" style="padding: 10px;">
+         		<a href="/generate_reports/" class="d-none d-sm-inline-block btn-sm shadow-sm" style="background-color: #ff7820; color: white; text-decoration: none; padding: 10px;"><i class="fa fa-download fa-sm text-white-50"></i> Generate Report</a>
+      		</div>
+		</div>
+		
+		<div class="row row-content">
+			<div class="col-12 d-flex justify-content-center">
+				<p class="text-secondary display-3"></p>
+			</div>
+	  	</div>
+		
+		<div class="row row-content flex flex-wrap align-content-stretch justify-content-center" style="min-height: 200px">
+
+
+		  	<div class="col-3">
+				<a href = "/view_jobs/" style="text-decoration: none;">
+				<div class="card box">
+			    	<h6 class="card-header text-white d-flex justify-content-center"  style="background-color: #ff7820;">View all jobs</h6>
+			    	<div class="card-body img-wrapper">
+						<img src="https://drive.google.com/thumbnail?id=1Sr63B_mpwfjym3n8ZsAMSP9klzkYd9Ql" class="offset-2 col-8 d-flex justify-content-center" style="height:120px;"/>
+			    	</div>
+			    </div>
+				</a>
+			</div>
+		
+			<div class="col-3">
+				<a href = "/create_job/" style="text-decoration: none;">
+				<div class="card box">
+					<h6 class="card-header text-white d-flex justify-content-center"  style="background-color: #e61c0d;">Create new Job</h6>
+					<div class="card-body img-wrapper">
+						<img src="/static/create.jpg" class="offset-2  col-8 d-flex justify-content-center" style="height:120px;"/>
+					</div>
+				</div>
+				</a>
+			</div>
+			
+			<div class="col-3">
+				<a href = "/voice_generator/" style="text-decoration: none;">
+				<div class="card box">
+		     		<h6 class="card-header bg-dark text-white d-flex justify-content-center">Generate voice files</h6>
+		    		<div class="card-body img-wrapper">
+						<img src="https://drive.google.com/thumbnail?id=1kzff_mgfDSOwFJb-XOs35OF8mkOuqm4a" class="offset-2 col-8 d-flex justify-content-center" style="height:120px;"/>
+		    		</div>
+		    	</div>
+				</a>
+			</div>
+
+		</div>
+	</div>
+
+</body>
+</html>
+{% endblock %}

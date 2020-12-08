@@ -1,0 +1,9 @@
+.vscode
+readme.txt
+Project/__pycache__/*
+Project/out_wav/*
+Project/Reports/*
+Project/Lists/*
+!Project/out_wav/.gitkeep
+!Project/Reports/.gitkeep
+!Project/Lists/.gitkeep
