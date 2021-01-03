@@ -95,7 +95,6 @@ class GenerateVoice:
 	def write_to_db(self):
 		try:
 			creation_log = np.load(self.filename, allow_pickle=True)
-			os.remove(self.filename)
 			cur, con = connection('asterisk')
 			for row in creation_log:
 				cur.execute("SELECT count(*) FROM ravenn_auto_dial WHERE lead_id=%s",[row[0]])
@@ -106,9 +105,10 @@ class GenerateVoice:
 				con.commit()
 			con.commit()
 			con.close()
+			os.remove(self.filename)
 			gc.collect()
 		except Exception as err:
-			print(f"Backend Error while making writing to db: {err}")
+			print(f"Backend Error while writing to db: {err}")
 			return False
 		return True
 	
