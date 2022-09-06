@@ -45,9 +45,9 @@ class GenerateVoice:
 			print(f"Can't create directory: {dirpath} as {err}")
 			sys.exit(1)
 		
-		authenticator = IAMAuthenticator('VaQDWgMsCTG1JbEUAA_ap-TI3f6LVPiW_Sek5gAEWzzv')
+		authenticator = IAMAuthenticator('IBM-Key-here')
 		self.service = TextToSpeechV1(authenticator=authenticator)
-		self.service.set_service_url('https://api.jp-tok.text-to-speech.watson.cloud.ibm.com/instances/3fd81f12-4880-47f3-add1-2eae2e38611a')
+		self.service.set_service_url('IBM-URL-here')
 		self.filename = f"{dirpath}/{username}_{list_id}_{log_number}.npy"
 
 	def start(self):
